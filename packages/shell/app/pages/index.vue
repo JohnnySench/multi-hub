@@ -3,7 +3,7 @@ const { apps } = useAppConfig()
 </script>
 
 <template>
-  <div>
+  <div class="flex flex-col">
     <UButton
       v-for="app in apps"
       :key="app.to"

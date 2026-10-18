@@ -10,6 +10,6 @@ useHead({
   <div>
     {{ formatPrice(2.43423) }}
     <AdminPriceTag :price="2.43423" />
-    <UButton>Primary</UButton>
+    <UButton class="text-red-500">Primary</UButton>
   </div>
 </template>

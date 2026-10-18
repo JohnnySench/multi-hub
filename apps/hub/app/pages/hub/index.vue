@@ -7,7 +7,7 @@ useHead({
 </script>
 
 <template>
-  <div>
+  <div class="text-red-500">
     {{ formatPrice(2.43423) }}
     <PriceTag :price="2.43423" />
   </div>
