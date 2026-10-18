@@ -5,5 +5,6 @@ export default defineNuxtConfig({
   extends: [
     '@multi/hub',
     '@multi/admin',
+    '@multi/currency',
   ],
 })

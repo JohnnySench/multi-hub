@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@multi/admin": "workspace:*",
+    "@multi/currency": "workspace:*",
     "@multi/hub": "workspace:*",
     "nuxt": "catalog:",
     "vue": "catalog:",
