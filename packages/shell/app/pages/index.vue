@@ -3,10 +3,12 @@ const { apps } = useAppConfig()
 </script>
 
 <template>
-  <UButton
+  <div>
+    <UButton
       v-for="app in apps"
       :key="app.to"
       :to="app.to"
       :label="app.name"
-  />
+    />
+  </div>
 </template>

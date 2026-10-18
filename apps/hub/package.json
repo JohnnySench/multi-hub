@@ -10,7 +10,8 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "typecheck": "nuxt typecheck",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "dependencies": {
     "@multi/shell": "workspace:*",
@@ -21,7 +22,6 @@
   },
   "devDependencies": {
     "@multi/eslint-config": "workspace:*",
-    "@nuxt/eslint": "catalog:",
     "eslint": "catalog:",
     "typescript": "catalog:",
     "vue-tsc": "catalog:"

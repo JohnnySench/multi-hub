@@ -5,12 +5,17 @@
   "main": "./nuxt.config.ts",
   "scripts": {
     "postinstall": "nuxt prepare",
-    "typecheck": "nuxt typecheck"
+    "typecheck": "nuxt typecheck",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "dependencies": {
-    "@multi/ui": "workspace:*"
+    "@multi/ui": "workspace:*",
+    "@nuxt/eslint": "catalog:"
   },
   "devDependencies": {
+    "@multi/eslint-config": "workspace:*",
+    "eslint": "catalog:",
     "nuxt": "catalog:"
   }
 }

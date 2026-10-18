@@ -5,9 +5,11 @@ export default defineNuxtConfig({
   extends: [
     '@multi/ui',
   ],
+  modules: ['@nuxt/eslint'],
+  eslint: { config: { standalone: false } },
   app: {
     head: {
-      title: 'MULTI'
-    }
-  }
+      title: 'MULTI',
+    },
+  },
 })

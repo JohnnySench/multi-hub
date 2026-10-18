@@ -2,13 +2,13 @@
 import { formatPrice } from '@multi/utils'
 
 useHead({
-  title: 'ADMIN'
+  title: 'ADMIN',
 })
 </script>
 
 <template>
   <div>
-    {{ formatPrice(2.43423)}}
+    {{ formatPrice(2.43423) }}
     <AdminPriceTag :price="2.43423" />
     <UButton>Primary</UButton>
   </div>

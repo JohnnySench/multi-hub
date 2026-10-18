@@ -4,9 +4,13 @@
   "private": true,
   "exports": "./index.ts",
   "scripts": {
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "devDependencies": {
+    "@multi/eslint-config": "workspace:*",
+    "eslint": "catalog:",
     "typescript": "catalog:"
   }
 }

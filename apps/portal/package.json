@@ -8,16 +8,20 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "typecheck": "nuxt typecheck"
+    "typecheck": "nuxt typecheck",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "dependencies": {
+    "@multi/admin": "workspace:*",
+    "@multi/hub": "workspace:*",
     "nuxt": "catalog:",
     "vue": "catalog:",
-    "vue-router": "catalog:",
-    "@multi/hub": "workspace:*",
-    "@multi/admin": "workspace:*"
+    "vue-router": "catalog:"
   },
   "devDependencies": {
+    "@multi/eslint-config": "workspace:*",
+    "eslint": "catalog:",
     "typescript": "catalog:",
     "vue-tsc": "catalog:"
   }

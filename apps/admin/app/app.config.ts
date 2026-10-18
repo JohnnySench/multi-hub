@@ -1,8 +1,8 @@
 export default defineAppConfig({
-    apps: [
-        {
-            to: '/admin',
-            name: 'Admin',
-        },
-    ],
+  apps: [
+    {
+      to: '/admin',
+      name: 'Admin',
+    },
+  ],
 })

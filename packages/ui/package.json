@@ -10,17 +10,18 @@
     "generate": "nuxt generate .playground",
     "preview": "nuxt preview .playground",
     "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "postinstall": "nuxt prepare .playground",
     "typecheck": "nuxt typecheck .playground"
   },
   "dependencies": {
-    "@nuxt/ui": "catalog:",
-    "tailwindcss": "catalog:",
     "@iconify-json/lucide": "catalog:",
-    "@multi/utils": "workspace:*"
+    "@multi/utils": "workspace:*",
+    "@nuxt/ui": "catalog:",
+    "tailwindcss": "catalog:"
   },
   "devDependencies": {
-    "@nuxt/eslint": "catalog:",
+    "@multi/eslint-config": "workspace:*",
     "@types/node": "catalog:",
     "eslint": "catalog:",
     "nuxt": "catalog:",
