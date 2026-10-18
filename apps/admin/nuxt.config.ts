@@ -5,9 +5,9 @@ export default defineNuxtConfig({
   extends: [
     '@multi/shell',
   ],
-  app: {
-    head: {
-      title: 'ADMIN'
-    }
-  }
+  // app: {
+  //   head: {
+  //     title: 'ADMIN'
+  //   }
+  // }
 })
