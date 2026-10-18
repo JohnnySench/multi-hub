@@ -16,6 +16,7 @@
   "dependencies": {
     "@multi/shell": "workspace:*",
     "nuxt": "catalog:",
+    "nuxt-open-fetch": "catalog:",
     "vue": "catalog:",
     "vue-router": "catalog:"
   },

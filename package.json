@@ -23,14 +23,14 @@
     "lint-fix:hub": "pnpm --filter @multi/hub exec eslint . --fix"
   },
   "devDependencies": {
-    "turbo": "catalog:",
     "@turbo/gen": "catalog:",
     "@types/node": "catalog:",
     "eslint": "catalog:",
     "husky": "catalog:",
-    "lint-staged": "catalog:"
+    "lint-staged": "catalog:",
+    "turbo": "catalog:"
   },
   "lint-staged": {
-    "{apps,packages}/**/*.{js,mjs,ts,vue,json}": "eslint --fix"
+    "{apps,packages}/**/*.{js,mjs,ts,vue,json}": "eslint --fix --no-warn-ignored"
   }
 }

@@ -5,4 +5,15 @@ export default defineNuxtConfig({
   extends: [
     '@multi/shell',
   ],
+  modules: [
+    'nuxt-open-fetch',
+  ],
+  openFetch: {
+    clients: {
+      currency: {
+        baseURL: 'https://api.frankfurter.dev/v2',
+        schema: './openapi/currency/openapi.json',
+      },
+    },
+  },
 })
