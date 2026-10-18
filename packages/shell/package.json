@@ -1,0 +1,20 @@
+{
+  "name": "@multi/shell",
+  "type": "module",
+  "private": true,
+  "main": "./nuxt.config.ts",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "typecheck": "nuxt typecheck"
+  },
+  "dependencies": {
+    "@multi/ui": "workspace:*"
+  },
+  "devDependencies": {
+    "nuxt": "catalog:"
+  }
+}

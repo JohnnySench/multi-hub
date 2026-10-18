@@ -1,0 +1,6 @@
+{
+  "name": "@multi/utils",
+  "type": "module",
+  "private": true,
+  "exports": "./index.ts"
+}

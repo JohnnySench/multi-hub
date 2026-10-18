@@ -1,0 +1,15 @@
+{
+  "name": "multiple-apps",
+  "type": "module",
+  "private": true,
+  "packageManager": "pnpm@12.3.4",
+  "engines": {
+    "node": "^24.19.0"
+  },
+  "scripts": {
+    "dev:hub": "pnpm --filter @multi/hub dev",
+    "dev:admin": "pnpm --filter @multi/admin dev --port 3001",
+    "typecheck:hub": "pnpm --filter @multi/hub typecheck",
+    "typecheck:admin": "pnpm --filter @multi/admin typecheck"
+  }
+}

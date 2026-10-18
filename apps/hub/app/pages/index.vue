@@ -1,0 +1,10 @@
+<script setup lang="ts">
+import { formatPrice } from '@multi/utils'
+</script>
+
+<template>
+  <div>
+    {{ formatPrice(2.43423)}}
+    <PriceTag :price="2.43423" />
+  </div>
+</template>
