@@ -7,8 +7,8 @@ const { apps } = useAppConfig()
     <UButton
       v-for="app in apps"
       :key="app.to"
-      :to="app.to"
       :label="app.name"
+      :to="app.to"
     />
   </div>
 </template>

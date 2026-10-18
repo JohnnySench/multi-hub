@@ -4,7 +4,9 @@
     "typecheck": {
       "dependsOn": ["^typecheck"]
     },
-    "lint": {},
+    "lint": {
+      "inputs": ["$TURBO_DEFAULT$", "$TURBO_ROOT$/packages/eslint-config/**"]
+    },
     "lint:fix": { "cache": false }
   }
 }
