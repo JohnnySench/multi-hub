@@ -1,5 +1,9 @@
 <script setup lang="ts">
 import { formatPrice } from '@multi/utils'
+
+useHead({
+  title: 'Hub'
+})
 </script>
 
 <template>
