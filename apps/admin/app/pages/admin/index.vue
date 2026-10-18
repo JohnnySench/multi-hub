@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { formatPrice } from '@multi/utils'
+  import { formatPrice } from '@multi/utils'
 
-useHead({
-  title: 'ADMIN',
-})
+  useHead({
+    title: 'ADMIN',
+  })
 </script>
 
 <template>

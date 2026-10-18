@@ -1,7 +1,7 @@
 <script setup lang="ts">
-defineProps<{
-  price: number
-}>()
+  defineProps<{
+    price: number
+  }>()
 </script>
 
 <template>

@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { formatPrice } from '@multi/utils'
+  import { formatPrice } from '@multi/utils'
 
-defineProps<{
-  price: number
-}>()
+  defineProps<{
+    price: number
+  }>()
 </script>
 
 <template>

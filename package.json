@@ -22,6 +22,8 @@
 
   },
   "devDependencies": {
-    "turbo": "catalog:"
+    "turbo": "catalog:",
+    "@turbo/gen": "catalog:",
+    "@types/node": "catalog:"
   }
 }

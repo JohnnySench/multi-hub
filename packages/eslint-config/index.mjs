@@ -3,6 +3,8 @@ import antfu from '@antfu/eslint-config'
 export default antfu({
   vue: {
     overrides: {
+      'style/indent': 'off',
+      'vue/script-indent': ['error', 2, { baseIndent: 1 }],
       'vue/attributes-order': ['error', {
         order: [
           'DEFINITION',          // is
