@@ -1,8 +1,0 @@
-{
-  "name": "@multi/sandbox",
-  "type": "module",
-  "private": true,
-  "dependencies": {
-    "@multi/utils": "workspace:*"
-  }
-}
