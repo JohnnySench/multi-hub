@@ -1,0 +1,9 @@
+{
+  "name": "@multi/eslint-config",
+  "private": true,
+  "type": "module",
+  "exports": "./index.mjs",
+  "dependencies": {
+    "@antfu/eslint-config": "catalog:"
+  }
+}

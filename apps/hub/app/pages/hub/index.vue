@@ -2,13 +2,13 @@
 import { formatPrice } from '@multi/utils'
 
 useHead({
-  title: 'Hub'
+  title: 'Hub',
 })
 </script>
 
 <template>
   <div>
-    {{ formatPrice(2.43423)}}
+    {{ formatPrice(2.43423) }}
     <PriceTag :price="2.43423" />
   </div>
 </template>

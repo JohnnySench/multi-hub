@@ -9,16 +9,20 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "typecheck": "nuxt typecheck"
+    "typecheck": "nuxt typecheck",
+    "lint": "eslint ."
   },
   "dependencies": {
+    "@multi/shell": "workspace:*",
+    "@multi/utils": "workspace:*",
     "nuxt": "catalog:",
     "vue": "catalog:",
-    "vue-router": "catalog:",
-    "@multi/utils": "workspace:*",
-    "@multi/shell": "workspace:*"
+    "vue-router": "catalog:"
   },
   "devDependencies": {
+    "@multi/eslint-config": "workspace:*",
+    "@nuxt/eslint": "catalog:",
+    "eslint": "catalog:",
     "typescript": "catalog:",
     "vue-tsc": "catalog:"
   }

@@ -4,5 +4,7 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   extends: [
     '@multi/shell',
-  ]
+  ],
+  modules: ['@nuxt/eslint'],
+  eslint: { config: { standalone: false } },
 })
