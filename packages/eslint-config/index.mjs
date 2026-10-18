@@ -21,6 +21,10 @@ export default antfu({
         ],
         alphabetical: true,
       }],
+      'vue/max-attributes-per-line': ['error', {
+        singleline: { max: 2 }, // в одну строку — не больше 2 атрибутов
+        multiline: { max: 1 },  // если перенёс — по одному на строку
+      }],
     },
   },
   typescript: true,
