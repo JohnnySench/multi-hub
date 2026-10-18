@@ -25,3 +25,5 @@ catalog:
   '@turbo/gen': "^2.11.9"
   "@antfu/eslint-config": "^9.5.1"
   "eslint": "^10.13.0"
+  "lint-staged": "^17.6.0"
+  "husky": "^9.1.7"

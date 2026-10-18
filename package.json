@@ -7,6 +7,7 @@
     "node": "^24.19.0"
   },
   "scripts": {
+    "prepare": "husky",
     "graph": "turbo devtools",
     "lint": "turbo run lint",
     "lint:fix": "turbo run lint:fix",
@@ -24,6 +25,12 @@
   "devDependencies": {
     "turbo": "catalog:",
     "@turbo/gen": "catalog:",
-    "@types/node": "catalog:"
+    "@types/node": "catalog:",
+    "eslint": "catalog:",
+    "husky": "catalog:",
+    "lint-staged": "catalog:"
+  },
+  "lint-staged": {
+    "{apps,packages}/**/*.{js,mjs,ts,vue,json}": "eslint --fix"
   }
 }
