@@ -28,3 +28,4 @@ catalog:
   "lint-staged": "^17.6.0"
   "husky": "^9.1.7"
   "nuxt-open-fetch": "^0.13.9"
+  "@vite-pwa/nuxt": "1.1.1"
