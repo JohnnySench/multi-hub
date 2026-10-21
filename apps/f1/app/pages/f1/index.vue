@@ -4,7 +4,7 @@
   })
 
   /** Пример использования */
-  const { data } = useLazyF1('/meetings', { query: { year: 2026 } })
+  const { data } = useLazyF1('/meetings', { query: { year: 2024 } })
   // const { $f1 } = useNuxtApp()
   onMounted(async () => {
     // await $f1('/meetings')
