@@ -1,7 +1,7 @@
 import antfu from '@antfu/eslint-config'
 
 export default antfu({
-  ignores: ['**/openapi/**'],
+  ignores: ['**/openapi/**', '**/specs/**'],
   vue: {
     overrides: {
       'style/indent': 'off',
