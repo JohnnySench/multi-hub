@@ -5,4 +5,15 @@ export default defineNuxtConfig({
   extends: [
     '@multi/shell',
   ],
+  modules: [
+    'nuxt-open-fetch',
+  ],
+  openFetch: {
+    clients: {
+      f1: {
+        baseURL: 'https://api.openf1.org/v1',
+        schema: './specs/f1.yaml',
+      },
+    },
+  },
 })
