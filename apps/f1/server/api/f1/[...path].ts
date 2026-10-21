@@ -1,5 +1,3 @@
-import { F1ApiMode } from '#shared/utils/f1ApiMode.ts'
-
 /** Кешируем ответы по пути запроса  */
 export default defineCachedEventHandler(async (event) => {
   /** Ловим все запросы (/api/f1/...) через nitro и проксируем их на openf1 */
