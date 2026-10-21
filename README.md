@@ -95,5 +95,5 @@ pnpm graph
 ## API
 ```
 apps/
-  f1/            Проксирует запросы через nitro на
+  f1/            Проксирует `/api/f1/*` через Nitro в `https://api.openf1.org/v1`
 ```
