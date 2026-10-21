@@ -1,0 +1,1255 @@
+openapi: 3.1.0
+info:
+  title: OpenF1 (ручки, которыми пользуется F1)
+  version: 1.0.0
+  description: |
+    OpenF1 — открытый API с данными Формулы-1: этапы, сессии, хронометраж, телеметрия.
+    История с 2023 года бесплатна и без ключа, live — по платной подписке.
+    Лимит бесплатного доступа: 3 запроса в секунду и 30 в минуту.
+    Если ничего не найдено, API отвечает 404, а не пустым массивом — прокси превращает его в [].
+    Описаны только используемые параметры и поля: https://openf1.org/docs/
+
+    Правило запросов: одна ручка на одну сессию — один запрос, нужного пилота или круг выбираем в коде.
+    Исключение — тяжёлые location и car_data, их спрашиваем по пилоту.
+    Схемы сверены с живыми ответами 2023–2026 (гонки, квалификации, спринты, тренировки, дождь, красный флаг).
+
+servers:
+  - url: https://api.openf1.org/v1
+    description: Официальный публичный API OpenF1
+
+# Исторические данные — без ключа
+security: []
+
+paths:
+  /meetings:
+    get:
+      operationId: getMeetings
+      summary: Этапы сезона
+      description: |
+        Этап — Гран-при или тестовый уикенд, обычно из нескольких сессий (тренировки, квалификация, гонка).
+        Данные обновляются ежедневно в полночь по UTC.
+        Документация: https://openf1.org/docs/#meetings
+      parameters:
+        - $ref: "#/components/parameters/Year"
+      responses:
+        "200":
+          description: Список этапов.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Meeting"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+
+  /sessions:
+    get:
+      operationId: getSessions
+      summary: Сессии этапа или сезона
+      description: |
+        Сессия — тренировка, квалификация, спринт или гонка. Из session_key сессии берутся все остальные ручки.
+        Документация: https://openf1.org/docs/#sessions
+      parameters:
+        - $ref: "#/components/parameters/Year"
+        - $ref: "#/components/parameters/MeetingKey"
+      responses:
+        "200":
+          description: Список сессий.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Session"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+
+  /drivers:
+    get:
+      operationId: getDrivers
+      summary: Пилоты сессии
+      description: |
+        Состав пилотов на сессию: имя, номер, команда, цвет команды, фото.
+        Документация: https://openf1.org/docs/#drivers
+      parameters:
+        - $ref: "#/components/parameters/SessionKey"
+      responses:
+        "200":
+          description: Список пилотов.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Driver"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+
+  /laps:
+    get:
+      operationId: getLaps
+      summary: Круги сессии
+      description: |
+        Круги всех пилотов: время круга и секторов, скорости, мини-сектора.
+        Документация: https://openf1.org/docs/#laps
+      parameters:
+        - $ref: "#/components/parameters/SessionKey"
+      responses:
+        "200":
+          description: Список кругов.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Lap"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+
+  /car_data:
+    get:
+      operationId: getCarData
+      summary: Телеметрия машины
+      description: |
+        Скорость, обороты, передача, газ, тормоз, DRS — около 3,7 точки в секунду.
+        Тяжёлая ручка: за гонку ~35 тыс. записей на пилота (~5 МБ), поэтому только по пилоту.
+        Документация: https://openf1.org/docs/#car-data
+      parameters:
+        - $ref: "#/components/parameters/SessionKey"
+        - $ref: "#/components/parameters/DriverNumber"
+      responses:
+        "200":
+          description: Точки телеметрии.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CarData"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+
+  /location:
+    get:
+      operationId: getLocation
+      summary: Координаты машины на трассе
+      description: |
+        Координаты x, y, z машины около 3,7 раза в секунду.
+        Тяжёлая ручка: за гонку ~35 тыс. записей на пилота (~4,5 МБ), поэтому только по пилоту.
+        Документация: https://openf1.org/docs/#location
+      parameters:
+        - $ref: "#/components/parameters/SessionKey"
+        - $ref: "#/components/parameters/DriverNumber"
+      responses:
+        "200":
+          description: Точки координат.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Location"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+
+  /position:
+    get:
+      operationId: getPosition
+      summary: Позиции пилотов
+      description: |
+        Смена позиции пилота во время сессии: запись появляется, когда позиция меняется.
+        Документация: https://openf1.org/docs/#position
+      parameters:
+        - $ref: "#/components/parameters/SessionKey"
+      responses:
+        "200":
+          description: Изменения позиций.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Position"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+
+  /intervals:
+    get:
+      operationId: getIntervals
+      summary: Интервалы в гонке
+      description: |
+        Отставание от лидера и от впереди идущего, обновляется каждые ~4 секунды. Только гонки и спринты.
+        За гонку ~30 тыс. записей (~4 МБ).
+        Документация: https://openf1.org/docs/#intervals
+      parameters:
+        - $ref: "#/components/parameters/SessionKey"
+      responses:
+        "200":
+          description: Интервалы.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Interval"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+
+  /pit:
+    get:
+      operationId: getPit
+      summary: Пит-стопы
+      description: |
+        Заезды в пит-лейн: время в пит-лейне и (с US GP 2024) время стоянки.
+        Документация: https://openf1.org/docs/#pit
+      parameters:
+        - $ref: "#/components/parameters/SessionKey"
+      responses:
+        "200":
+          description: Пит-стопы.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Pit"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+
+  /stints:
+    get:
+      operationId: getStints
+      summary: Стинты (отрезки на одном комплекте шин)
+      description: |
+        Документация: https://openf1.org/docs/#stints
+      parameters:
+        - $ref: "#/components/parameters/SessionKey"
+      responses:
+        "200":
+          description: Стинты.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Stint"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+
+  /race_control:
+    get:
+      operationId: getRaceControl
+      summary: Сообщения дирекции гонки
+      description: |
+        Флаги, сейфти-кар, DRS, расследования, статус сессии. Текст сообщения — оригинал FIA, на английском.
+        Документация: https://openf1.org/docs/#race-control
+      parameters:
+        - $ref: "#/components/parameters/SessionKey"
+      responses:
+        "200":
+          description: Сообщения.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/RaceControl"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+
+  /team_radio:
+    get:
+      operationId: getTeamRadio
+      summary: Радиопереговоры
+      description: |
+        Ссылки на MP3 выбранных переговоров пилота с командой. С 2026 года у большинства этапов записей нет (404).
+        Сервер с MP3 не отдаёт CORS-заголовки: `<audio>` играет, а читать байты можно только через прокси.
+        Документация: https://openf1.org/docs/#team-radio
+      parameters:
+        - $ref: "#/components/parameters/SessionKey"
+      responses:
+        "200":
+          description: Записи радио.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/TeamRadio"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+
+  /weather:
+    get:
+      operationId: getWeather
+      summary: Погода на трассе
+      description: |
+        Замер раз в минуту. Прогноза нет — только факт.
+        Документация: https://openf1.org/docs/#weather
+      parameters:
+        - $ref: "#/components/parameters/SessionKey"
+      responses:
+        "200":
+          description: Замеры погоды.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Weather"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+
+  /session_result:
+    get:
+      operationId: getSessionResult
+      summary: Итоги сессии
+      description: |
+        Итоговая таблица. Формат duration и gap_to_leader зависит от типа сессии:
+        гонка — общее время и отставание (или «+N LAP(S)»), тренировка — лучший круг,
+        квалификация — массив из трёх значений для Q1, Q2, Q3.
+        Документация: https://openf1.org/docs/#session-result
+      parameters:
+        - $ref: "#/components/parameters/SessionKey"
+      responses:
+        "200":
+          description: Итоги.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SessionResult"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+
+  /starting_grid:
+    get:
+      operationId: getStartingGrid
+      summary: Стартовая решётка
+      description: |
+        Внимание: решётка записана под session_key **квалификации** (для спринта — Sprint Qualifying),
+        а не гонки. По ключу гонки API отвечает 404.
+        Документация: https://openf1.org/docs/#starting-grid
+      parameters:
+        - $ref: "#/components/parameters/SessionKey"
+      responses:
+        "200":
+          description: Решётка.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/StartingGrid"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+
+  /overtakes:
+    get:
+      operationId: getOvertakes
+      summary: Обгоны
+      description: |
+        Только гонки и спринты.
+        Документация: https://openf1.org/docs/#overtakes
+      parameters:
+        - $ref: "#/components/parameters/SessionKey"
+      responses:
+        "200":
+          description: Обгоны.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Overtake"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+
+  /championship_drivers:
+    get:
+      operationId: getChampionshipDrivers
+      summary: Личный зачёт (beta)
+      description: |
+        Очки и места пилотов до и после гонки. Только гонки и спринты, ручка в beta.
+        Документация: https://openf1.org/docs/#drivers-championship-beta
+      parameters:
+        - $ref: "#/components/parameters/SessionKey"
+      responses:
+        "200":
+          description: Зачёт пилотов.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ChampionshipDriver"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+
+  /championship_teams:
+    get:
+      operationId: getChampionshipTeams
+      summary: Кубок конструкторов (beta)
+      description: |
+        Очки и места команд до и после гонки. Только гонки и спринты, ручка в beta.
+        Документация: https://openf1.org/docs/#teams-championship-beta
+      parameters:
+        - $ref: "#/components/parameters/SessionKey"
+      responses:
+        "200":
+          description: Зачёт команд.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ChampionshipTeam"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+
+components:
+  parameters:
+    Year:
+      name: year
+      in: query
+      description: Год сезона.
+      required: false
+      schema:
+        type: integer
+        examples: [2025]
+    MeetingKey:
+      name: meeting_key
+      in: query
+      description: Ключ этапа из /meetings.
+      required: false
+      schema:
+        type: integer
+        examples: [1270]
+    SessionKey:
+      name: session_key
+      in: query
+      description: Ключ сессии из /sessions.
+      required: true
+      schema:
+        type: integer
+        examples: [9896]
+    DriverNumber:
+      name: driver_number
+      in: query
+      description: Номер пилота.
+      required: true
+      schema:
+        type: integer
+        examples: [4]
+
+  responses:
+    TooManyRequests:
+      description: Превышен лимит запросов (3 в секунду, 30 в минуту). Повторить через Retry-After секунд.
+      headers:
+        Retry-After:
+          description: Через сколько секунд можно повторить запрос.
+          schema:
+            type: integer
+
+  schemas:
+    # Общие поля
+
+    MeetingKey:
+      description: Ключ этапа.
+      type: integer
+      examples: [1270]
+    SessionKey:
+      description: Ключ сессии.
+      type: integer
+      examples: [9896]
+    DriverNumber:
+      description: Номер пилота в сезоне.
+      type: integer
+      examples: [4]
+    DateTime:
+      description: Дата и время, UTC, ISO 8601.
+      type: string
+      format: date-time
+      examples: ["2025-10-05T12:03:32.197000+00:00"]
+    LapGap:
+      description: Отставание в секундах или «+N LAP(S)», если пилот на круг и более позади.
+      type: [number, string]
+      examples: [5.43, "+1 LAP", "+2 LAPS"]
+
+    # Ручки
+
+    Meeting:
+      type: object
+      required:
+        - meeting_key
+        - meeting_name
+        - date_start
+        - date_end
+        - year
+        - circuit_key
+        - circuit_short_name
+        - country_name
+        - gmt_offset
+        - is_cancelled
+      properties:
+        meeting_key:
+          $ref: "#/components/schemas/MeetingKey"
+        meeting_name:
+          description: Название этапа.
+          type: string
+          examples: [Singapore Grand Prix]
+        meeting_official_name:
+          description: Официальное название этапа со спонсором.
+          type: string
+          examples: [FORMULA 1 SINGAPORE AIRLINES SINGAPORE GRAND PRIX 2025]
+        location:
+          description: Город или район, где проходит этап.
+          type: string
+          examples: [Marina Bay]
+        year:
+          description: Год сезона.
+          type: integer
+          examples: [2025]
+        date_start:
+          description: Начало этапа (первая сессия), UTC.
+          type: string
+          format: date-time
+          examples: ["2025-10-03T09:30:00+00:00"]
+        date_end:
+          description: Конец этапа (последняя сессия), UTC.
+          type: string
+          format: date-time
+          examples: ["2025-10-05T14:00:00+00:00"]
+        gmt_offset:
+          description: Смещение местного времени трассы от UTC (ЧЧ:ММ:СС, может быть со знаком «-»).
+          type: string
+          examples: ["08:00:00", "-04:00:00"]
+        is_cancelled:
+          description: Этап отменён.
+          type: boolean
+        circuit_key:
+          description: Уникальный идентификатор трассы.
+          type: integer
+          examples: [61]
+        circuit_short_name:
+          description: Краткое название трассы.
+          type: string
+          examples: [Singapore]
+        circuit_type:
+          description: Тип трассы — постоянная, временная уличная или временная дорожная.
+          type: string
+          enum:
+            - Permanent
+            - Temporary - Street
+            - Temporary - Road
+        circuit_image:
+          # без format: uri — в ссылках бывают пробелы («Saudi Arabia%20carbon.png»)
+          description: Картинка схемы трассы.
+          type: string
+        circuit_info_url:
+          description: JSON трассы на MultiViewer — контур, повороты, потеря на пит-стопе.
+          type: string
+          format: uri
+          examples: ["https://api.multiviewer.app/api/v1/circuits/61/2025"]
+        country_key:
+          description: Уникальный идентификатор страны.
+          type: integer
+          examples: [157]
+        country_name:
+          description: Название страны.
+          type: string
+          examples: [Singapore]
+        country_code:
+          description: Трёхбуквенный код страны. Устарел, OpenF1 уберёт его после сезона 2026.
+          type: string
+          deprecated: true
+          examples: [SGP]
+        country_flag:
+          description: Картинка флага страны.
+          type: string
+          format: uri
+
+    Session:
+      type: object
+      required:
+        - session_key
+        - session_type
+        - session_name
+        - date_start
+        - date_end
+        - meeting_key
+        - gmt_offset
+        - year
+        - is_cancelled
+      properties:
+        session_key:
+          $ref: "#/components/schemas/SessionKey"
+        session_type:
+          description: Тип сессии. Спринт — тип Race, квалификация к спринту — Qualifying, тесты — Practice.
+          type: string
+          enum: [Practice, Qualifying, Race]
+        session_name:
+          description: Название сессии.
+          type: string
+          examples: [Practice 1, Practice 2, Practice 3, Qualifying, Sprint Qualifying, Sprint, Race, Day 1]
+        date_start:
+          description: Начало сессии, UTC.
+          type: string
+          format: date-time
+          examples: ["2025-10-05T12:00:00+00:00"]
+        date_end:
+          description: Конец сессии, UTC.
+          type: string
+          format: date-time
+          examples: ["2025-10-05T14:00:00+00:00"]
+        meeting_key:
+          $ref: "#/components/schemas/MeetingKey"
+        circuit_key:
+          description: Уникальный идентификатор трассы.
+          type: integer
+          examples: [61]
+        circuit_short_name:
+          description: Краткое название трассы.
+          type: string
+          examples: [Singapore]
+        country_key:
+          description: Уникальный идентификатор страны.
+          type: integer
+          examples: [157]
+        country_name:
+          description: Название страны.
+          type: string
+          examples: [Singapore]
+        country_code:
+          description: Трёхбуквенный код страны.
+          type: string
+          examples: [SGP]
+        location:
+          description: Город или район.
+          type: string
+          examples: [Marina Bay]
+        gmt_offset:
+          description: Смещение местного времени трассы от UTC (ЧЧ:ММ:СС, может быть со знаком «-»).
+          type: string
+          examples: ["08:00:00"]
+        year:
+          description: Год сезона.
+          type: integer
+          examples: [2025]
+        is_cancelled:
+          description: Сессия отменена.
+          type: boolean
+
+    Driver:
+      type: object
+      required:
+        - session_key
+        - driver_number
+        - name_acronym
+        - full_name
+        - team_name
+        - team_colour
+        - headshot_url
+      properties:
+        meeting_key:
+          $ref: "#/components/schemas/MeetingKey"
+        session_key:
+          $ref: "#/components/schemas/SessionKey"
+        driver_number:
+          $ref: "#/components/schemas/DriverNumber"
+        broadcast_name:
+          description: Имя, как в трансляции.
+          type: string
+          examples: [L NORRIS]
+        full_name:
+          description: Полное имя.
+          type: string
+          examples: [Lando NORRIS]
+        first_name:
+          description: Имя.
+          type: string
+          examples: [Lando]
+        last_name:
+          description: Фамилия.
+          type: string
+          examples: [Norris]
+        name_acronym:
+          description: Трёхбуквенный код пилота.
+          type: string
+          examples: [NOR]
+        team_name:
+          description: Команда.
+          type: string
+          examples: [McLaren]
+        team_colour:
+          description: Цвет команды, RRGGBB без «#».
+          type: string
+          pattern: "^[0-9A-Fa-f]{6}$"
+          examples: [F47600]
+        headshot_url:
+          description: Фото пилота. Бывает null — нужна заглушка.
+          type: [string, "null"]
+        country_code:
+          description: Код страны пилота. Устарел, OpenF1 уберёт его после сезона 2026; уже часто null.
+          type: [string, "null"]
+          deprecated: true
+
+    Lap:
+      type: object
+      required:
+        - session_key
+        - driver_number
+        - lap_number
+        - date_start
+        - lap_duration
+        - duration_sector_1
+        - duration_sector_2
+        - duration_sector_3
+        - is_pit_out_lap
+      properties:
+        meeting_key:
+          $ref: "#/components/schemas/MeetingKey"
+        session_key:
+          $ref: "#/components/schemas/SessionKey"
+        driver_number:
+          $ref: "#/components/schemas/DriverNumber"
+        lap_number:
+          description: Номер круга в сессии, с 1.
+          type: integer
+          examples: [1]
+        date_start:
+          description: Примерное время начала круга, UTC. Бывает null.
+          type: [string, "null"]
+          format: date-time
+        lap_duration:
+          description: Время круга, секунды. null — круг не засчитан (сход, красный флаг, первый круг).
+          type: [number, "null"]
+          examples: [96.123]
+        duration_sector_1:
+          description: Время первого сектора, секунды.
+          type: [number, "null"]
+        duration_sector_2:
+          description: Время второго сектора, секунды.
+          type: [number, "null"]
+        duration_sector_3:
+          description: Время третьего сектора, секунды.
+          type: [number, "null"]
+        i1_speed:
+          description: Скорость на первой промежуточной точке, км/ч.
+          type: [integer, "null"]
+        i2_speed:
+          description: Скорость на второй промежуточной точке, км/ч.
+          type: [integer, "null"]
+        st_speed:
+          description: Скорость в спид-трапе, км/ч.
+          type: [integer, "null"]
+        is_pit_out_lap:
+          description: Круг выезда с пит-лейна.
+          type: boolean
+        segments_sector_1:
+          $ref: "#/components/schemas/LapSegments"
+        segments_sector_2:
+          $ref: "#/components/schemas/LapSegments"
+        segments_sector_3:
+          $ref: "#/components/schemas/LapSegments"
+
+    LapSegments:
+      description: |
+        Мини-сектора сектора, коды цвета: 0 — нет данных, 2048 — жёлтый, 2049 — зелёный,
+        2051 — фиолетовый, 2064 — пит-лейн. Элемент бывает null.
+      type: [array, "null"]
+      items:
+        type: [integer, "null"]
+      examples: [[2049, 2051, 2049, 2048]]
+
+    CarData:
+      type: object
+      required:
+        - date
+        - driver_number
+        - speed
+        - throttle
+        - brake
+        - n_gear
+        - rpm
+        - drs
+      properties:
+        meeting_key:
+          $ref: "#/components/schemas/MeetingKey"
+        session_key:
+          $ref: "#/components/schemas/SessionKey"
+        driver_number:
+          $ref: "#/components/schemas/DriverNumber"
+        date:
+          $ref: "#/components/schemas/DateTime"
+        speed:
+          description: Скорость, км/ч.
+          type: integer
+          examples: [298]
+        throttle:
+          description: Газ, % (бывает чуть больше 100).
+          type: integer
+          examples: [100]
+        brake:
+          description: Тормоз, 0 или 100 (бывает чуть больше 100).
+          type: integer
+          examples: [0]
+        n_gear:
+          description: Передача, 1–8; 0 — нейтраль.
+          type: integer
+          examples: [7]
+        rpm:
+          description: Обороты двигателя.
+          type: integer
+          examples: [11800]
+        drs:
+          description: |
+            Статус DRS: 0, 1 — выключен; 8 — доступен; 10, 12, 14 — открыт; остальные — неизвестно.
+            С 2026 года DRS нет.
+          type: integer
+          examples: [12]
+
+    Location:
+      type: object
+      required:
+        - date
+        - driver_number
+        - x
+        - y
+      properties:
+        meeting_key:
+          $ref: "#/components/schemas/MeetingKey"
+        session_key:
+          $ref: "#/components/schemas/SessionKey"
+        driver_number:
+          $ref: "#/components/schemas/DriverNumber"
+        date:
+          $ref: "#/components/schemas/DateTime"
+        x:
+          description: Координата x, условные единицы.
+          type: integer
+        y:
+          description: Координата y, условные единицы.
+          type: integer
+        z:
+          description: Высота, условные единицы.
+          type: integer
+
+    Position:
+      type: object
+      required:
+        - date
+        - driver_number
+        - position
+      properties:
+        meeting_key:
+          $ref: "#/components/schemas/MeetingKey"
+        session_key:
+          $ref: "#/components/schemas/SessionKey"
+        driver_number:
+          $ref: "#/components/schemas/DriverNumber"
+        date:
+          $ref: "#/components/schemas/DateTime"
+        position:
+          description: Позиция, с 1.
+          type: integer
+          examples: [1]
+
+    Interval:
+      type: object
+      required:
+        - date
+        - driver_number
+        - interval
+        - gap_to_leader
+      properties:
+        meeting_key:
+          $ref: "#/components/schemas/MeetingKey"
+        session_key:
+          $ref: "#/components/schemas/SessionKey"
+        driver_number:
+          $ref: "#/components/schemas/DriverNumber"
+        date:
+          $ref: "#/components/schemas/DateTime"
+        gap_to_leader:
+          description: Отставание от лидера. null — у лидера.
+          anyOf:
+            - $ref: "#/components/schemas/LapGap"
+            - type: "null"
+        interval:
+          description: Отставание от впереди идущего. null — у лидера.
+          anyOf:
+            - $ref: "#/components/schemas/LapGap"
+            - type: "null"
+
+    Pit:
+      type: object
+      required:
+        - date
+        - driver_number
+        - lap_number
+        - lane_duration
+        - stop_duration
+      properties:
+        meeting_key:
+          $ref: "#/components/schemas/MeetingKey"
+        session_key:
+          $ref: "#/components/schemas/SessionKey"
+        driver_number:
+          $ref: "#/components/schemas/DriverNumber"
+        date:
+          $ref: "#/components/schemas/DateTime"
+        lap_number:
+          description: Круг заезда в боксы.
+          type: integer
+          examples: [13]
+        lane_duration:
+          description: Время в пит-лейне, секунды.
+          type: number
+          examples: [24.102]
+        stop_duration:
+          description: Время стоянки, секунды. Есть только с US GP 2024, до этого и иногда после — null.
+          type: [number, "null"]
+          examples: [2.4]
+        pit_duration:
+          description: То же, что lane_duration. Устарело, OpenF1 уберёт после сезона 2026.
+          type: number
+          deprecated: true
+
+    Stint:
+      type: object
+      required:
+        - driver_number
+        - stint_number
+        - lap_start
+        - lap_end
+        - compound
+        - tyre_age_at_start
+      properties:
+        meeting_key:
+          $ref: "#/components/schemas/MeetingKey"
+        session_key:
+          $ref: "#/components/schemas/SessionKey"
+        driver_number:
+          $ref: "#/components/schemas/DriverNumber"
+        stint_number:
+          description: Номер стинта, с 1.
+          type: integer
+          examples: [1]
+        lap_start:
+          description: Первый круг стинта. Бывает null.
+          type: [integer, "null"]
+          examples: [1]
+        lap_end:
+          description: Последний завершённый круг стинта. Бывает null.
+          type: [integer, "null"]
+          examples: [13]
+        compound:
+          description: Состав шин. Список — известные значения; новое значение поймает проверка дрейфа (#58).
+          type: string
+          enum: [SOFT, MEDIUM, HARD, INTERMEDIATE, WET]
+        tyre_age_at_start:
+          description: Возраст комплекта на старте стинта, в кругах. Больше 0 — б/у комплект.
+          type: integer
+          examples: [0]
+
+    RaceControl:
+      type: object
+      required:
+        - date
+        - category
+        - message
+        - flag
+        - scope
+        - lap_number
+        - driver_number
+        - sector
+      properties:
+        meeting_key:
+          $ref: "#/components/schemas/MeetingKey"
+        session_key:
+          $ref: "#/components/schemas/SessionKey"
+        date:
+          $ref: "#/components/schemas/DateTime"
+        category:
+          description: Категория сообщения. Список — известные значения; новое поймает проверка дрейфа (#58).
+          type: string
+          enum: [Flag, SafetyCar, Drs, SessionStatus, CarEvent, Other]
+        flag:
+          description: Флаг. null — сообщение не про флаг.
+          type: [string, "null"]
+          enum: [GREEN, YELLOW, DOUBLE YELLOW, RED, BLUE, CLEAR, CHEQUERED, BLACK AND WHITE, null]
+        scope:
+          description: На что действует флаг. null — сообщение не про флаг.
+          type: [string, "null"]
+          enum: [Track, Sector, Driver, null]
+        sector:
+          description: Мини-сектор трассы, если флаг секторный. Иначе null.
+          type: [integer, "null"]
+          examples: [2]
+        driver_number:
+          description: Пилот, если сообщение про него. Иначе null.
+          type: [integer, "null"]
+          examples: [4]
+        lap_number:
+          description: Круг. В тренировках и квалификации бывает null.
+          type: [integer, "null"]
+          examples: [1]
+        qualifying_phase:
+          description: Сегмент квалификации — 1, 2, 3. В остальных сессиях null.
+          type: [integer, "null"]
+          enum: [1, 2, 3, null]
+        message:
+          description: Оригинальный текст FIA, на английском.
+          type: string
+          examples: [DOUBLE YELLOW IN TRACK SECTOR 2]
+
+    TeamRadio:
+      type: object
+      required:
+        - date
+        - driver_number
+        - recording_url
+      properties:
+        meeting_key:
+          $ref: "#/components/schemas/MeetingKey"
+        session_key:
+          $ref: "#/components/schemas/SessionKey"
+        driver_number:
+          $ref: "#/components/schemas/DriverNumber"
+        date:
+          $ref: "#/components/schemas/DateTime"
+        recording_url:
+          # без format: uri — в ссылках бывают пробелы («São Paulo Grand Prix»)
+          description: MP3 записи на livetiming.formula1.com (без CORS).
+          type: string
+
+    Weather:
+      type: object
+      required:
+        - date
+        - air_temperature
+        - track_temperature
+        - humidity
+        - rainfall
+        - wind_speed
+        - wind_direction
+      properties:
+        meeting_key:
+          $ref: "#/components/schemas/MeetingKey"
+        session_key:
+          $ref: "#/components/schemas/SessionKey"
+        date:
+          $ref: "#/components/schemas/DateTime"
+        air_temperature:
+          description: Температура воздуха, °C.
+          type: number
+          examples: [29.1]
+        track_temperature:
+          description: Температура трассы, °C.
+          type: number
+          examples: [35.4]
+        humidity:
+          description: Влажность, %.
+          type: number
+          examples: [76]
+        pressure:
+          description: Давление, мбар.
+          type: number
+          examples: [1010.5]
+        rainfall:
+          description: Идёт ли дождь — 0 или 1.
+          type: integer
+          enum: [0, 1]
+        wind_speed:
+          description: Скорость ветра, м/с.
+          type: number
+          examples: [1.2]
+        wind_direction:
+          description: Направление ветра, градусы 0–359.
+          type: integer
+          examples: [180]
+
+    SessionResult:
+      type: object
+      required:
+        - driver_number
+        - position
+        - number_of_laps
+        - duration
+        - gap_to_leader
+        - dnf
+        - dns
+        - dsq
+      properties:
+        meeting_key:
+          $ref: "#/components/schemas/MeetingKey"
+        session_key:
+          $ref: "#/components/schemas/SessionKey"
+        driver_number:
+          $ref: "#/components/schemas/DriverNumber"
+        position:
+          description: Итоговое место. null — без классификации (DNS, DSQ, без времени).
+          type: [integer, "null"]
+          examples: [1]
+        number_of_laps:
+          description: Сколько кругов проехал. Бывает null.
+          type: [integer, "null"]
+          examples: [62]
+        points:
+          description: Очки за сессию. Есть только у гонок и спринтов.
+          type: number
+          examples: [25]
+        duration:
+          description: |
+            Гонка — общее время, секунды; тренировка — лучший круг;
+            квалификация — массив [Q1, Q2, Q3], где null — сегмент не проехал. null — нет времени.
+          oneOf:
+            - type: [number, "null"]
+            - type: array
+              items:
+                type: [number, "null"]
+              minItems: 3
+              maxItems: 3
+          examples: [6022.367, [89.928, 89.562, 89.158]]
+        gap_to_leader:
+          description: |
+            Отставание от победителя: секунды или «+N LAP(S)»; у лидера 0;
+            квалификация — массив [Q1, Q2, Q3]. null — нет времени.
+          oneOf:
+            - $ref: "#/components/schemas/LapGap"
+            - type: "null"
+            - type: array
+              items:
+                type: [number, "null"]
+              minItems: 3
+              maxItems: 3
+          examples: [0, 5.43, "+1 LAP", [0.163, 0, 0]]
+        dnf:
+          description: Не финишировал.
+          type: boolean
+        dns:
+          description: Не стартовал.
+          type: boolean
+        dsq:
+          description: Дисквалифицирован.
+          type: boolean
+
+    StartingGrid:
+      type: object
+      required:
+        - driver_number
+        - position
+        - lap_duration
+      properties:
+        meeting_key:
+          $ref: "#/components/schemas/MeetingKey"
+        session_key:
+          description: Ключ сессии квалификации (не гонки).
+          type: integer
+          examples: [9892]
+        driver_number:
+          $ref: "#/components/schemas/DriverNumber"
+        position:
+          description: Место на старте.
+          type: integer
+          examples: [1]
+        lap_duration:
+          description: Время квалификационного круга, секунды. null — без времени.
+          type: [number, "null"]
+          examples: [89.158]
+
+    Overtake:
+      type: object
+      required:
+        - date
+        - overtaking_driver_number
+        - overtaken_driver_number
+        - position
+      properties:
+        meeting_key:
+          $ref: "#/components/schemas/MeetingKey"
+        session_key:
+          $ref: "#/components/schemas/SessionKey"
+        date:
+          $ref: "#/components/schemas/DateTime"
+        overtaking_driver_number:
+          description: Кто обогнал.
+          type: integer
+          examples: [4]
+        overtaken_driver_number:
+          description: Кого обогнали.
+          type: integer
+          examples: [1]
+        position:
+          description: Место обогнавшего после обгона.
+          type: integer
+          examples: [2]
+
+    ChampionshipDriver:
+      type: object
+      required:
+        - driver_number
+        - position_start
+        - position_current
+        - points_start
+        - points_current
+      properties:
+        meeting_key:
+          $ref: "#/components/schemas/MeetingKey"
+        session_key:
+          $ref: "#/components/schemas/SessionKey"
+        driver_number:
+          $ref: "#/components/schemas/DriverNumber"
+        position_start:
+          description: Место в зачёте до гонки.
+          type: integer
+          examples: [2]
+        position_current:
+          description: Место в зачёте после гонки (во время live — текущее).
+          type: integer
+          examples: [2]
+        points_start:
+          description: Очки до гонки.
+          type: number
+          examples: [324]
+        points_current:
+          description: Очки после гонки (во время live — текущие).
+          type: number
+          examples: [336]
+
+    ChampionshipTeam:
+      type: object
+      required:
+        - team_name
+        - position_start
+        - position_current
+        - points_start
+        - points_current
+      properties:
+        meeting_key:
+          $ref: "#/components/schemas/MeetingKey"
+        session_key:
+          $ref: "#/components/schemas/SessionKey"
+        team_name:
+          description: Команда.
+          type: string
+          examples: [McLaren]
+        position_start:
+          description: Место в кубке до гонки.
+          type: integer
+          examples: [1]
+        position_current:
+          description: Место в кубке после гонки.
+          type: integer
+          examples: [1]
+        points_start:
+          description: Очки до гонки.
+          type: number
+          examples: [623]
+        points_current:
+          description: Очки после гонки.
+          type: number
+          examples: [650]
