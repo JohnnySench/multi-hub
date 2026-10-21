@@ -25,6 +25,7 @@ apps/
   portal/        рут: подключает все приложения через extends, своих страниц нет
   hub/           приложение, страницы под /hub
   admin/         приложение, страницы под /admin
+  f1/            приложение, страницы под /f1
 packages/
   shell/         каркас: UApp, layout, выбор приложения на /, общие модули (@nuxt/eslint)
   ui/            кит: Nuxt UI, Tailwind, тема, общие компоненты (PriceTag)
@@ -90,3 +91,9 @@ pnpm graph
 |----------|-------|
 | [docs/getting-started.md](./docs/getting-started.md) | Как устроен репо: роли пакетов, куда класть код, кто побеждает при конфликте, частые ошибки |
 | [docs/create-app.md](./docs/create-app.md) | Создание нового приложения генератором |
+
+## API
+```
+apps/
+  f1/            Проксирует `/api/f1/*` через Nitro в `https://api.openf1.org/v1`
+```
