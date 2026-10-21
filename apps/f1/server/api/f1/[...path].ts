@@ -5,7 +5,7 @@ export default defineCachedEventHandler(async (event) => {
   const path = getRouterParam(event, 'path')
   const query = getQuery(event)
   try {
-    return await $fetch(`${config.f1BaseUrl}/${path}`, { query })
+    return await $fetch(`${config.f1BaseUrl}/${path}`, { query, retry: 0, timeout: 10_000 })
   }
   catch (error) {
     if (error instanceof Error && 'statusCode' in error && error.statusCode === 404) {
