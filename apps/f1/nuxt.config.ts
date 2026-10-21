@@ -2,6 +2,10 @@
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
+  runtimeConfig: {
+    /** Только в папке server */
+    f1BaseUrl: 'https://api.openf1.org/v1',
+  },
   extends: [
     '@multi/shell',
   ],
@@ -11,7 +15,7 @@ export default defineNuxtConfig({
   openFetch: {
     clients: {
       f1: {
-        baseURL: 'https://api.openf1.org/v1',
+        baseURL: '/api/f1', /** Ходит на наш сервак nitro */
         schema: './specs/f1.yaml',
       },
     },
