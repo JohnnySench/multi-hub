@@ -6,6 +6,8 @@
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
+    "dev:record": "cross-env NUXT_F1_API_MODE=record nuxt dev",
+    "dev:replay": "cross-env NUXT_F1_API_MODE=replay nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
@@ -22,6 +24,7 @@
   },
   "devDependencies": {
     "@multi/eslint-config": "workspace:*",
+    "cross-env": "catalog:",
     "eslint": "catalog:",
     "typescript": "catalog:",
     "vue-tsc": "catalog:"
