@@ -11,12 +11,12 @@ export default defineCachedEventHandler(async (event) => {
     .join('&')
   const hashKey = `${path}:${hashQuery}.json`
 
-  if (config.f1ApiMode === 'live') {
+  if (config.f1ApiMode === F1ApiMode.Live) {
     return await fetchF1(`${path}`, query)
   }
   if (config.f1ApiMode === F1ApiMode.Record) {
     const response = await fetchF1(`${path}`, query)
-    await storage.setItem(hashKey, JSON.stringify(response, null, 2))
+    await storage.setItem(hashKey, response)
     return response
   }
   if (config.f1ApiMode === F1ApiMode.Replay) {
@@ -30,12 +30,17 @@ export default defineCachedEventHandler(async (event) => {
       message: `Нет записи для ${hashKey} — запусти с NUXT_F1_API_MODE=record`,
     })
   }
+  throw createError({
+    status: 500,
+    statusText: 'Invalid F1 API mode',
+    message: `Неизвестный режим f1ApiMode: ${String(config.f1ApiMode)}`,
+  })
 }, {
-  /** Кешириуем 30 минут */
-  maxAge: 30 * 60,
+  /** Кешириуем 60 минут */
+  maxAge: 60 * 60,
   // getKey: event => event.path, и так по дефолту
-  /** Когда 30 минут пройдет, отдадим что было в кеше, в фоне начнем обновление (default) */
+  /** Когда 60 минут пройдет, отдадим что было в кеше, в фоне начнем обновление (default) */
   swr: true,
   /** Кеш только в live режиме (прод сборка), в dev работаем на моках record/replay */
-  shouldBypassCache: () => useRuntimeConfig().f1ApiMode !== 'live',
+  shouldBypassCache: () => useRuntimeConfig().f1ApiMode !== F1ApiMode.Live,
 })
