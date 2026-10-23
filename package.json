@@ -11,6 +11,7 @@
     "graph": "turbo devtools",
     "lint": "turbo run lint",
     "lint:fix": "turbo run lint:fix",
+    "prepare:types": "turbo run postinstall",
     "typecheck": "turbo run typecheck",
     "dev:f1": "pnpm --filter @multi/f1 dev",
     "dev:portal": "pnpm --filter @multi/portal dev",
