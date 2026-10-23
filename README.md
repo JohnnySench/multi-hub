@@ -23,8 +23,6 @@
 ```
 apps/
   portal/        рут: подключает все приложения через extends, своих страниц нет
-  hub/           приложение, страницы под /hub
-  admin/         приложение, страницы под /admin
   f1/            приложение, страницы под /f1
 packages/
   shell/         каркас: UApp, layout, выбор приложения на /, общие модули (@nuxt/eslint)
@@ -34,7 +32,7 @@ packages/
 turbo/generators/ генератор нового приложения (turbo gen)
 ```
 
-Кто на кого опирается: `portal → hub, admin → shell → ui → utils`. Подробно — в [docs/getting-started.md](./docs/getting-started.md).
+Кто на кого опирается: `portal → f1 → shell → ui → utils`. Подробно — в [docs/getting-started.md](./docs/getting-started.md).
 
 ## Команды
 
@@ -47,12 +45,11 @@ pnpm install
 Запуск:
 
 ```bash
-pnpm dev:portal   # всё вместе: / — выбор приложения, /hub, /admin
-pnpm dev:hub      # одно приложение
-pnpm dev:admin
+pnpm dev:portal   # всё вместе: / — выбор приложения, /f1 and others
+pnpm dev:f1      # одно приложение
 ```
 
-Все dev-серверы по умолчанию на порту 3000. Чтобы поднять два одновременно, второму передай порт: `pnpm dev:admin --port 3001`.
+Все dev-серверы по умолчанию на порту 3000. Чтобы поднять два одновременно, второму передай порт: `pnpm dev:f1 --port 3001`.
 
 Проверки по всем пакетам через turbo (с кэшем):
 

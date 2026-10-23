@@ -7,7 +7,8 @@
     <UButton
       v-for="app in apps"
       :key="app.to"
-      :label="app.name"
+      :icon="app.icon"
+      :label="app.title"
       :to="app.to"
     />
   </div>

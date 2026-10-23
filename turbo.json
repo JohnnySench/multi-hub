@@ -11,6 +11,7 @@
     "lint": {
       "inputs": ["$TURBO_DEFAULT$", "$TURBO_ROOT$/packages/eslint-config/**"]
     },
-    "lint:fix": { "cache": false }
+    "lint:fix": { "cache": false },
+    "postinstall": { "cache": false }
   }
 }

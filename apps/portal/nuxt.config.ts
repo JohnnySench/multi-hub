@@ -6,9 +6,6 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
   extends: [
-    '@multi/hub',
-    '@multi/admin',
-    '@multi/currency',
     '@multi/f1',
   ],
   modules: [
