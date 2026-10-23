@@ -13,10 +13,7 @@
     "lint:fix": "eslint . --fix"
   },
   "dependencies": {
-    "@multi/admin": "workspace:*",
-    "@multi/currency": "workspace:*",
     "@multi/f1": "workspace:*",
-    "@multi/hub": "workspace:*",
     "@vite-pwa/nuxt": "catalog:",
     "nuxt": "catalog:",
     "vue": "catalog:",

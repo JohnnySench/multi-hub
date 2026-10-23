@@ -1,6 +1,10 @@
 export interface AppEntry {
   name: string
   to: string
+  title: string
+  icon: string
+  theme: string
+  nav: NavigationMenuItem[]
 }
 
 declare module '@nuxt/schema' {

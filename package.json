@@ -14,14 +14,7 @@
     "typecheck": "turbo run typecheck",
     "dev:f1": "pnpm --filter @multi/f1 dev",
     "dev:portal": "pnpm --filter @multi/portal dev",
-    "dev:hub": "pnpm --filter @multi/hub dev",
-    "dev:admin": "pnpm --filter @multi/admin dev",
-    "dev:currency": "pnpm --filter @multi/currency dev",
-    "typecheck:portal": "pnpm --filter @multi/portal typecheck",
-    "typecheck:hub": "pnpm --filter @multi/hub typecheck",
-    "typecheck:admin": "pnpm --filter @multi/admin typecheck",
-    "lint:hub": "pnpm --filter @multi/hub lint",
-    "lint-fix:hub": "pnpm --filter @multi/hub exec eslint . --fix"
+    "typecheck:portal": "pnpm --filter @multi/portal typecheck"
   },
   "devDependencies": {
     "@turbo/gen": "catalog:",
