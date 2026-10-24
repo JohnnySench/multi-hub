@@ -18,13 +18,14 @@ export default defineNuxtConfig({
     '@nuxt/eslint',
     '@vite-pwa/nuxt',
     'nuxt-open-fetch',
+    '@vueuse/nuxt',
   ],
   eslint: { config: { standalone: false } },
   /** Pit wall только тёмный: класс dark сразу в HTML, переключателя нет */
   ui: { colorMode: false },
   app: {
     head: {
-      title: 'MULTI · Формула 1',
+      title: 'Формула 1',
       htmlAttrs: { class: 'dark' },
       meta: [
         { name: 'theme-color', content: manifest.theme_color },
@@ -74,7 +75,7 @@ export default defineNuxtConfig({
           google: {
             experimental: {
               variableAxis: {
-                wdth: [['151', '151']],
+                wdth: [['25', '151']],
                 slnt: [['-10', '0']],
               },
             },

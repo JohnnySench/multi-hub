@@ -4,7 +4,7 @@ type Manifest = Exclude<ModuleOptions['manifest'], false | undefined>
 
 export default {
   id: '/',
-  name: 'MULTI · Формула 1',
+  name: 'Формула 1',
   short_name: 'F1',
   description: 'Сезон, гонки, телеметрия и стратегия Формулы 1 по данным OpenF1',
   lang: 'ru',

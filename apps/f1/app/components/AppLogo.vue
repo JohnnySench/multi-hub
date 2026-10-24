@@ -1,0 +1,54 @@
+<template>
+  <NuxtLink
+    class="flex items-center gap-3 shrink-0"
+    to="/"
+  >
+    <svg
+      aria-hidden="true"
+      class="size-6.5"
+      viewBox="0 0 72 72"
+    >
+      <rect
+        fill="#0B0B0B"
+        height="72"
+        rx="18"
+        width="72"
+      />
+      <g transform="skewX(-14) translate(9 0)">
+        <rect
+          fill="#fff"
+          height="32"
+          rx="1.5"
+          width="8"
+          x="14"
+          y="20"
+        />
+        <rect
+          fill="#fff"
+          height="22"
+          rx="1.5"
+          width="8"
+          x="26"
+          y="20"
+        />
+        <rect
+          fill="#fff"
+          height="32"
+          rx="1.5"
+          width="8"
+          x="38"
+          y="20"
+        />
+        <rect
+          class="fill-primary"
+          height="32"
+          rx="1.5"
+          width="8"
+          x="50"
+          y="20"
+        />
+      </g>
+    </svg>
+    <span class="display-xxs sm:display-xs text-highlighted">Формула 1</span>
+  </NuxtLink>
+</template>
