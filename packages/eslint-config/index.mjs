@@ -1,4 +1,5 @@
 import antfu from '@antfu/eslint-config'
+import tailwind from 'eslint-plugin-better-tailwindcss'
 
 export default antfu({
   ignores: ['**/openapi/**', '**/specs/**'],
@@ -33,4 +34,17 @@ export default antfu({
   typescript: true,
   stylistic: { indent: 2, quotes: 'single', semi: false },
   rules: { 'no-console': 'error' },
+}, {
+  // Tailwind в шаблонах: перенос длинных class, порядок, дубли, конфликты, неизвестные классы
+  files: ['**/*.vue'],
+  ...tailwind.configs.recommended,
+  rules: {
+    ...tailwind.configs.recommended.rules,
+    // переносить только длинные строки классов; короткие вроде «hidden sm:block» остаются в одну строку
+    'better-tailwindcss/enforce-consistent-line-wrapping': ['warn', { printWidth: 100, preferSingleLine: true }],
+  },
+  settings: {
+    // путь от папки пакета, где запускается eslint: у f1 и ui он одинаковый
+    'better-tailwindcss': { entryPoint: 'app/assets/css/main.css' },
+  },
 })

@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <footer class="bg-muted rounded-lg px-4 py-3">
+  <footer class="rounded-lg bg-muted px-4 py-3">
     FOOTER
   </footer>
 </template>

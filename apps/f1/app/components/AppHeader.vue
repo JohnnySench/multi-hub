@@ -26,8 +26,8 @@
 </script>
 
 <template>
-  <header class="bg-muted rounded-lg px-4 py-3 flex items-center justify-between">
-    <div class="flex items-center gap-2">
+  <header class="flex items-center justify-between rounded-lg bg-muted px-2 py-3 sm:px-4">
+    <div class="flex items-center gap-1 sm:gap-2">
       <AppLogo />
       <span class="text-muted">/</span>
       <UBreadcrumb :items="breadcrumbs">
@@ -40,7 +40,7 @@
       <UInput
         v-model.trim="query"
         :ui="{
-          base: 'w-90',
+          base: 'sm:w-50 md:w-70 lg:90',
         }"
         class="hidden sm:block"
         icon="i-lucide-search"
@@ -51,15 +51,20 @@
         v-model="selectedOption"
         :items="options"
         :ui="{
-          base: 'w-40 text-sm',
-          trailingIcon: 'group-data-[state=open]:rotate-180 transition-transform duration-200',
-          itemTrailingIcon: 'text-accent size-4',
+          base: 'w-36 text-sm sm:w-40 sm:gap-2 sm:px-3 sm:py-2',
+          trailingIcon: 'size-4 transition-transform duration-200 group-data-[state=open]:rotate-180 sm:size-5',
+          itemTrailingIcon: 'size-4 text-accent',
         }"
         label-key="label"
         selected-icon="i-lucide-check"
-        size="lg"
+        size="md"
         value-key="id"
-      />
+      >
+        <template #default="{ modelValue }">
+          <span class="sm:hidden">{{ modelValue }}</span>
+          <span class="hidden sm:inline">Сезон {{ modelValue }}</span>
+        </template>
+      </USelect>
     </div>
   </header>
 </template>

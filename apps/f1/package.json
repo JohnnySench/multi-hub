@@ -30,6 +30,7 @@
     "@multi/eslint-config": "workspace:*",
     "cross-env": "catalog:",
     "eslint": "catalog:",
+    "tailwindcss": "catalog:",
     "typescript": "catalog:",
     "vue-tsc": "catalog:"
   }
