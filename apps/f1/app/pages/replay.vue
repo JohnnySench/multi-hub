@@ -1,6 +1,6 @@
 <script setup lang="ts">
   definePageMeta({
-    title: 'Радио',
+    title: 'Повтор гонки',
   })
 </script>
 
