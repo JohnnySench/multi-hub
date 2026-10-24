@@ -1,5 +1,6 @@
 import { fileURLToPath } from 'node:url'
 // https://nuxt.com/docs/api/configuration/nuxt-config
+import manifest from './manifest'
 import { F1ApiMode } from './shared/utils/f1ApiMode.ts'
 
 export default defineNuxtConfig({
@@ -11,11 +12,43 @@ export default defineNuxtConfig({
     f1ApiMode: F1ApiMode.Live,
   },
   extends: [
-    '@multi/shell',
+    '@multi/ui',
   ],
   modules: [
+    '@nuxt/eslint',
+    '@vite-pwa/nuxt',
     'nuxt-open-fetch',
   ],
+  eslint: { config: { standalone: false } },
+  /** Pit wall только тёмный: класс dark сразу в HTML, переключателя нет */
+  ui: { colorMode: false },
+  app: {
+    head: {
+      title: 'MULTI · Формула 1',
+      htmlAttrs: { class: 'dark' },
+      meta: [
+        { name: 'theme-color', content: manifest.theme_color },
+      ],
+      link: [
+        { rel: 'manifest', href: '/manifest.webmanifest' },
+        { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
+        { rel: 'apple-touch-icon', href: '/apple-touch-icon-180x180.png' },
+      ],
+    },
+  },
+  pwa: {
+    registerType: 'autoUpdate',
+    manifest,
+    workbox: {
+      globPatterns: ['**/*.{js,css,html,ico,png,svg,webp,woff2}'],
+      globIgnores: ['screenshots/**'],
+      // SSR: страницы не пререндерятся, кэшировать «/» как запасной ответ нельзя
+      navigateFallback: null,
+    },
+    devOptions: {
+      enabled: true,
+    },
+  },
   openFetch: {
     clients: {
       f1: {
@@ -29,10 +62,7 @@ export default defineNuxtConfig({
       mocks: { driver: 'fs', base: './server/mocks/f1' },
     },
   },
-  css: [
-    fileURLToPath(new URL('./app/assets/css/main.css', import.meta.url)),
-    fileURLToPath(new URL('./app/assets/css/typography.css', import.meta.url)),
-  ],
+  css: [fileURLToPath(new URL('./app/assets/css/main.css', import.meta.url))],
   fonts: {
     families: [
       {

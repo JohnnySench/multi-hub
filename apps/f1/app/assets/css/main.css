@@ -1,85 +1,119 @@
-[data-theme="f1"] {
+/* Тема Pit wall. Единственная точка входа Tailwind в F1: кит + свои токены и утилиты.
+   Схема одна, тёмная (class="dark" на <html> в nuxt.config) */
+@import "@multi/ui/css";
+@import "./typography.css";
 
-  /* шрифты */
+@theme static {
+  /* шрифты → font-display / font-text / font-num */
   --font-display: 'Roboto Flex', sans-serif;
   --font-text: 'Geist', sans-serif;
   --font-num: 'JetBrains Mono', monospace;
 
-  /* поверхности */
-  --canvas: #08080A;
-  --isl: #141417;
-  --isl-2: #1D1D22;
-  --line: color-mix(in oklab, white 7%, transparent);
-  --fill-1: color-mix(in oklab, white 4%, transparent);
-  --fill-2: color-mix(in oklab, white 8%, transparent);
-  --fill-4: color-mix(in oklab, white 20%, transparent);
-  --white: #FFFFFF;
-  --white-70: color-mix(in oklab, white 70%, transparent);
-  --ink: #0B0B0B;
+  /* радиусы как в макете → rounded-xs … rounded-lg, Nuxt UI берёт их же */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
 
-  /* текст */
-  --hl: #FFFFFF;
-  --text: #E4E4EA;
-  --muted: #8D8D99;
+  /* палитры Nuxt UI (app.config: primary 'pitwall', neutral 'carbon') */
+  --color-pitwall-50: #FFF0ED;
+  --color-pitwall-100: #FCD5CE;
+  --color-pitwall-200: #FE9C8D;
+  --color-pitwall-300: #FF1E10; /* accent: яркий красный на тёмном */
+  --color-pitwall-400: #E10600; /* surface: кнопки, Nuxt UI в тёмной схеме берёт этот */
+  --color-pitwall-500: #BE0601;
+  --color-pitwall-600: #9E0501;
+  --color-pitwall-700: #800804;
+  --color-pitwall-800: #620B06;
+  --color-pitwall-900: #480804;
+  --color-pitwall-950: #2B0403;
 
-  /* акцент */
-  --accent-surface: #E10600;
-  --red: #FF1E10;
-  --accent-tint: color-mix(in oklab, var(--accent-surface) 16%, transparent);
-  --accent-tint-strong: color-mix(in oklab, var(--accent-surface) 40%, transparent);
+  --color-carbon-50: #F4F4F7;
+  --color-carbon-100: #E4E4EA; /* текст */
+  --color-carbon-200: #D4D4DB;
+  --color-carbon-300: #B4B4BE;
+  --color-carbon-400: #8D8D99; /* подписи */
+  --color-carbon-500: #5E5E69;
+  --color-carbon-600: #3F3F47;
+  --color-carbon-700: #2A2A31;
+  --color-carbon-800: #1D1D22; /* карточка */
+  --color-carbon-900: #141417; /* остров */
+  --color-carbon-950: #08080A; /* подложка */
 
-  /* статусы */
-  --success: #30D158;
-  --warning: #FFD60A;
-  --info: #3D8BFF;
-  --fastest: #C77DFF;
+  /* статусы (app.config: success / warning / info), опорный оттенок — 400 */
+  --color-status-green-50: #EAF9EA;
+  --color-status-green-100: #CFF5D2;
+  --color-status-green-200: #9FEFA7;
+  --color-status-green-300: #6AE27D;
+  --color-status-green-400: #30D158;
+  --color-status-green-500: #06AC3F;
+  --color-status-green-600: #038A31;
+  --color-status-green-700: #026923;
+  --color-status-green-800: #014C17;
+  --color-status-green-900: #01350E;
+  --color-status-green-950: #001E05;
+  --color-status-yellow-50: #FCF8E8;
+  --color-status-yellow-100: #FEF3CA;
+  --color-status-yellow-200: #FFEBA2;
+  --color-status-yellow-300: #FFE171;
+  --color-status-yellow-400: #FFD60A;
+  --color-status-yellow-500: #D1AF05;
+  --color-status-yellow-600: #A78C06;
+  --color-status-yellow-700: #806A03;
+  --color-status-yellow-800: #5D4D02;
+  --color-status-yellow-900: #423600;
+  --color-status-yellow-950: #261E00;
+  --color-status-blue-50: #EAF2FE;
+  --color-status-blue-100: #D1E3FF;
+  --color-status-blue-200: #A8CAFE;
+  --color-status-blue-300: #76ACFF;
+  --color-status-blue-400: #3D8BFF;
+  --color-status-blue-500: #256FDA;
+  --color-status-blue-600: #1557B4;
+  --color-status-blue-700: #0A418C;
+  --color-status-blue-800: #032D68;
+  --color-status-blue-900: #011E4B;
+  --color-status-blue-950: #000E2D;
 
-  /* отступы и радиусы */
-  --sp-0: 2px;  --sp-1: 4px;  --sp-2: 8px;  --sp-3: 12px; --sp-4: 16px;
-  --sp-5: 20px; --sp-6: 24px; --sp-8: 32px; --sp-10: 40px; --sp-12: 48px;
-  --r-xs: 4px; --r-sm: 8px; --r-md: 12px; --r-lg: 18px; --r-full: 999px;
+  /* чего нет у Nuxt UI → bg-fill-1, bg-accent-tint, text-ink … */
+  --color-accent: var(--color-pitwall-300); /* красный на тёмном: иконки, линии, акцентный текст */
+  --color-fill-1: color-mix(in oklab, white 4%, transparent);
+  --color-fill-2: color-mix(in oklab, white 8%, transparent);
+  --color-fill-4: color-mix(in oklab, white 20%, transparent);
+  --color-white-70: color-mix(in oklab, white 70%, transparent);
+  --color-ink: #0B0B0B;
+  --color-accent-tint: color-mix(in oklab, var(--color-pitwall-400) 16%, transparent);
+  --color-accent-tint-strong: color-mix(in oklab, var(--color-pitwall-400) 40%, transparent);
+  --color-fastest: #C77DFF;
 
-  /* данные: шины */
-  --tyre-s: #FF3B30; --tyre-m: #FFD60A; --tyre-h: #F2F2F2; --tyre-i: #30D158; --tyre-w: #3D8BFF;
+  /* данные: шины (compound из /stints) → bg-tyre-s … */
+  --color-tyre-s: #FF3B30;
+  --color-tyre-m: #FFD60A;
+  --color-tyre-h: #F2F2F2;
+  --color-tyre-i: #30D158;
+  --color-tyre-w: #3D8BFF;
 
-  /* данные: команды 2026 (запасной цвет, на экране берём team_colour из API) */
-  --team-mclaren: #F47600;    --team-ferrari: #ED1131;  --team-red-bull: #4781D7;
-  --team-mercedes: #00D7B6;   --team-aston-martin: #229971; --team-williams: #1868DB;
-  --team-alpine: #00A1E8;     --team-haas: #9C9FA2;     --team-racing-bulls: #6C98FF;
-  --team-audi: #F50537;       --team-cadillac: #909090;
+  /* данные: команды 2026, запасной цвет — на экране берём team_colour из API */
+  --color-team-mclaren: #F47600;
+  --color-team-ferrari: #ED1131;
+  --color-team-red-bull: #4781D7;
+  --color-team-mercedes: #00D7B6;
+  --color-team-aston-martin: #229971;
+  --color-team-williams: #1868DB;
+  --color-team-alpine: #00A1E8;
+  --color-team-haas: #9C9FA2;
+  --color-team-racing-bulls: #6C98FF;
+  --color-team-audi: #F50537;
+  --color-team-cadillac: #909090;
+}
 
-/* Подвязываем к теме Nuxt/ui */
-  --ui-color-primary-50:  #FFF0ED;
-  --ui-color-primary-100: #FCD5CE;
-  --ui-color-primary-200: #FE9C8D;
-  --ui-color-primary-300: #FF1E10;  /* accent: яркий красный на тёмном */
-  --ui-color-primary-400: #E10600;  /* surface: кнопки, Nuxt UI в тёмной схеме берёт этот */
-  --ui-color-primary-500: #BE0601;
-  --ui-color-primary-600: #9E0501;
-  --ui-color-primary-700: #800804;
-  --ui-color-primary-800: #620B06;
-  --ui-color-primary-900: #480804;
-  --ui-color-primary-950: #2B0403;
-
-  --ui-color-neutral-50:  #F4F4F7;
-  --ui-color-neutral-100: #E4E4EA;  /* = --text */
-  --ui-color-neutral-200: #D4D4DB;
-  --ui-color-neutral-300: #B4B4BE;
-  --ui-color-neutral-400: #8D8D99;  /* = --muted */
-  --ui-color-neutral-500: #5E5E69;
-  --ui-color-neutral-600: #3F3F47;
-  --ui-color-neutral-700: #2A2A31;
-  --ui-color-neutral-800: #1D1D22;  /* = --isl-2 */
-  --ui-color-neutral-900: #141417;  /* = --isl */
-  --ui-color-neutral-950: #08080A;  /* = --canvas */
-
-  --ui-bg: var(--canvas);
-  --ui-bg-muted: var(--isl);
-  --ui-bg-elevated: var(--isl-2);
-  --ui-border: var(--line);
-  --ui-text-highlighted: var(--hl);
-  --ui-text: var(--text);
-  --ui-text-muted: var(--muted);
-
-  --ui-radius: var(--r-md)
+/* семантика Nuxt UI → Pit wall: bg-default, bg-muted, bg-elevated, border-default, text-highlighted, text-default, text-muted */
+:root {
+  --ui-bg: var(--color-carbon-950);
+  --ui-bg-muted: var(--color-carbon-900);
+  --ui-bg-elevated: var(--color-carbon-800);
+  --ui-border: color-mix(in oklab, white 7%, transparent);
+  --ui-text-highlighted: #FFFFFF;
+  --ui-text: var(--color-carbon-100);
+  --ui-text-muted: var(--color-carbon-400);
 }

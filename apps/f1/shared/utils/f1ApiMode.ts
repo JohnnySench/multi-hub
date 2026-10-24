@@ -1,7 +1,6 @@
-export const F1ApiMode = {
-  Live: 'live',
-  Record: 'record',
-  Replay: 'replay',
-} as const
-
-export type F1ApiModeType = typeof F1ApiMode[keyof typeof F1ApiMode]
+/** Режим прокси OpenF1: живой API, запись ответов в моки или проигрывание моков */
+export enum F1ApiMode {
+  Live = 'live',
+  Record = 'record',
+  Replay = 'replay',
+}

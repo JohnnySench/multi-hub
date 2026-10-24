@@ -3,6 +3,7 @@ import { fileURLToPath } from 'node:url'
 export default defineNuxtConfig({
   extends: ['..'],
   modules: ['@nuxt/eslint'],
+  css: [fileURLToPath(new URL('../app/assets/css/main.css', import.meta.url))],
   eslint: {
     config: {
       standalone: false,

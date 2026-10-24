@@ -13,9 +13,7 @@
     "lint:fix": "turbo run lint:fix",
     "prepare:types": "turbo run postinstall",
     "typecheck": "turbo run typecheck",
-    "dev:f1": "pnpm --filter @multi/f1 dev",
-    "dev:portal": "pnpm --filter @multi/portal dev",
-    "typecheck:portal": "pnpm --filter @multi/portal typecheck"
+    "dev:f1": "pnpm --filter @multi/f1 dev"
   },
   "devDependencies": {
     "@turbo/gen": "catalog:",

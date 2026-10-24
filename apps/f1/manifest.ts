@@ -3,13 +3,13 @@ import type { ModuleOptions } from '@vite-pwa/nuxt'
 type Manifest = Exclude<ModuleOptions['manifest'], false | undefined>
 
 export default {
-  id: '/f1',
+  id: '/',
   name: 'MULTI · Формула 1',
   short_name: 'F1',
   description: 'Сезон, гонки, телеметрия и стратегия Формулы 1 по данным OpenF1',
   lang: 'ru',
   dir: 'ltr',
-  start_url: '/f1',
+  start_url: '/',
   scope: '/',
   display: 'standalone',
   orientation: 'any',

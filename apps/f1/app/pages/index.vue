@@ -1,8 +1,4 @@
 <script setup lang="ts">
-  useHead({
-    title: 'f1',
-  })
-
   /** Пример использования */
   const { data } = useLazyF1('/meetings', { query: { year: 2024 } })
   // const { $f1 } = useNuxtApp()

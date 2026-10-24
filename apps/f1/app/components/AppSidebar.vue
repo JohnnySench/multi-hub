@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <nav class="bg-muted rounded-md px-4 py-3">
+  <nav class="bg-muted rounded-lg px-4 py-3">
     SIDEBAR
     SIDEBAR
     SIDEBAR
