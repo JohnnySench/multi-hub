@@ -1,13 +1,80 @@
 [data-theme="f1"] {
-  --ui-color-primary-50: var(--color-red-50);
-  --ui-color-primary-100: var(--color-red-100);
-  --ui-color-primary-200: var(--color-red-200);
-  --ui-color-primary-300: var(--color-red-300);
-  --ui-color-primary-400: var(--color-red-400);
-  --ui-color-primary-500: var(--color-red-500);
-  --ui-color-primary-600: var(--color-red-600);
-  --ui-color-primary-700: var(--color-red-700);
-  --ui-color-primary-800: var(--color-red-800);
-  --ui-color-primary-900: var(--color-red-900);
-  --ui-color-primary-950: var(--color-red-950);
+
+  /* поверхности */
+  --canvas: #08080A;
+  --isl: #141417;
+  --isl-2: #1D1D22;
+  --line: color-mix(in oklab, white 7%, transparent);
+  --fill-1: color-mix(in oklab, white 4%, transparent);
+  --fill-2: color-mix(in oklab, white 8%, transparent);
+  --fill-4: color-mix(in oklab, white 20%, transparent);
+  --white: #FFFFFF;
+  --white-70: color-mix(in oklab, white 70%, transparent);
+  --ink: #0B0B0B;
+
+  /* текст */
+  --hl: #FFFFFF;
+  --text: #E4E4EA;
+  --muted: #8D8D99;
+
+  /* акцент */
+  --accent-surface: #E10600;
+  --red: #FF1E10;
+  --accent-tint: color-mix(in oklab, var(--accent-surface) 16%, transparent);
+  --accent-tint-strong: color-mix(in oklab, var(--accent-surface) 40%, transparent);
+
+  /* статусы */
+  --success: #30D158;
+  --warning: #FFD60A;
+  --info: #3D8BFF;
+  --fastest: #C77DFF;
+
+  /* отступы и радиусы */
+  --sp-0: 2px;  --sp-1: 4px;  --sp-2: 8px;  --sp-3: 12px; --sp-4: 16px;
+  --sp-5: 20px; --sp-6: 24px; --sp-8: 32px; --sp-10: 40px; --sp-12: 48px;
+  --r-xs: 4px; --r-sm: 8px; --r-md: 12px; --r-lg: 18px; --r-full: 999px;
+
+  /* данные: шины */
+  --tyre-s: #FF3B30; --tyre-m: #FFD60A; --tyre-h: #F2F2F2; --tyre-i: #30D158; --tyre-w: #3D8BFF;
+
+  /* данные: команды 2026 (запасной цвет, на экране берём team_colour из API) */
+  --team-mclaren: #F47600;    --team-ferrari: #ED1131;  --team-red-bull: #4781D7;
+  --team-mercedes: #00D7B6;   --team-aston-martin: #229971; --team-williams: #1868DB;
+  --team-alpine: #00A1E8;     --team-haas: #9C9FA2;     --team-racing-bulls: #6C98FF;
+  --team-audi: #F50537;       --team-cadillac: #909090;
+
+/* Подвязываем к теме Nuxt/ui */
+  --ui-color-primary-50:  #FFF0ED;
+  --ui-color-primary-100: #FCD5CE;
+  --ui-color-primary-200: #FE9C8D;
+  --ui-color-primary-300: #FF1E10;  /* accent: яркий красный на тёмном */
+  --ui-color-primary-400: #E10600;  /* surface: кнопки, Nuxt UI в тёмной схеме берёт этот */
+  --ui-color-primary-500: #BE0601;
+  --ui-color-primary-600: #9E0501;
+  --ui-color-primary-700: #800804;
+  --ui-color-primary-800: #620B06;
+  --ui-color-primary-900: #480804;
+  --ui-color-primary-950: #2B0403;
+
+  --ui-color-neutral-50:  #F4F4F7;
+  --ui-color-neutral-100: #E4E4EA;  /* = --text */
+  --ui-color-neutral-200: #D4D4DB;
+  --ui-color-neutral-300: #B4B4BE;
+  --ui-color-neutral-400: #8D8D99;  /* = --muted */
+  --ui-color-neutral-500: #5E5E69;
+  --ui-color-neutral-600: #3F3F47;
+  --ui-color-neutral-700: #2A2A31;
+  --ui-color-neutral-800: #1D1D22;  /* = --isl-2 */
+  --ui-color-neutral-900: #141417;  /* = --isl */
+  --ui-color-neutral-950: #08080A;  /* = --canvas */
+
+  --ui-bg: var(--canvas);
+  --ui-bg-muted: var(--isl);
+  --ui-bg-elevated: var(--isl-2);
+  --ui-border: var(--line);
+  --ui-text-highlighted: var(--hl);
+  --ui-text: var(--text);
+  --ui-text-muted: var(--muted);
+
+  --ui-radius: var(--r-md)
 }
