@@ -2,6 +2,7 @@ export interface NavItem {
   label: string
   icon: `i-lucide-${string}`
   to: string
+  badge?: number
 }
 
 export interface NavGroup {
@@ -10,12 +11,12 @@ export interface NavGroup {
 }
 
 /** Пункты сайдбара F1 по группам, по ним же строится мобильная навигация */
-export const navigation: NavGroup[] = [
+export const navGroups: NavGroup[] = [
   {
     label: 'Сезон',
     items: [
       { label: 'Обзор', icon: 'i-lucide-layout-dashboard', to: '/' },
-      { label: 'Календарь', icon: 'i-lucide-calendar', to: '/calendar' },
+      { label: 'Календарь', icon: 'i-lucide-calendar', to: '/calendar', badge: 23 },
       { label: 'Зачёт', icon: 'i-lucide-trophy', to: '/standings' },
     ],
   },
@@ -31,7 +32,7 @@ export const navigation: NavGroup[] = [
   {
     label: 'Пилоты',
     items: [
-      { label: 'Пилоты', icon: 'i-lucide-users', to: '/drivers' },
+      { label: 'Пилоты', icon: 'i-lucide-users', to: '/drivers', badge: 22 },
       { label: 'Радио', icon: 'i-lucide-radio', to: '/radio' },
       { label: 'Подписки', icon: 'i-lucide-bell', to: '/subscriptions' },
     ],

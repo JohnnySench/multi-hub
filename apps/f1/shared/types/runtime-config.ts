@@ -3,4 +3,5 @@ declare module 'nuxt/schema' {
     f1ApiMode: F1ApiMode
   }
 }
+
 export {}
