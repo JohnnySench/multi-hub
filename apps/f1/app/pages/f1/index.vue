@@ -13,6 +13,9 @@
 
 <template>
   <div>
+    <UButton class="mx-2">
+      Test
+    </UButton>
     {{ data }}
   </div>
 </template>

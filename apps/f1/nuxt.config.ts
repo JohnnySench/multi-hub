@@ -1,3 +1,4 @@
+import { fileURLToPath } from 'node:url'
 // https://nuxt.com/docs/api/configuration/nuxt-config
 import { F1ApiMode } from './shared/utils/f1ApiMode.ts'
 
@@ -28,4 +29,5 @@ export default defineNuxtConfig({
       mocks: { driver: 'fs', base: './server/mocks/f1' },
     },
   },
+  css: [fileURLToPath(new URL('./app/assets/css/main.css', import.meta.url))],
 })
