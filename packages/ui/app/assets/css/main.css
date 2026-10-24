@@ -2,3 +2,14 @@
 @import "@nuxt/ui";
 @source "../../../../../apps";
 @source "../../../../../packages";
+
+/* 1. Общее правило для любой темы: семантика заново читает палитру */
+[data-theme] {
+  --ui-primary: var(--ui-color-primary-500);
+  /* то же для secondary, success, info, warning, error */
+}
+.dark [data-theme], .dark[data-theme] {
+  --ui-primary: var(--ui-color-primary-400);   /* в тёмной теме Nuxt UI берёт 400 */
+  /* … */
+}
+
