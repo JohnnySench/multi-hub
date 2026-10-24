@@ -42,6 +42,7 @@
         :ui="{
           base: 'w-90',
         }"
+        class="hidden sm:block"
         icon="i-lucide-search"
         placeholder="Пилот, этап, сессия…"
         size="lg"
@@ -50,7 +51,7 @@
         v-model="selectedOption"
         :items="options"
         :ui="{
-          base: 'w-40',
+          base: 'w-40 text-sm',
           trailingIcon: 'group-data-[state=open]:rotate-180 transition-transform duration-200',
           itemTrailingIcon: 'text-accent size-4',
         }"

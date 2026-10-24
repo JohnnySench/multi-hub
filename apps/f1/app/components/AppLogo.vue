@@ -5,7 +5,7 @@
   >
     <svg
       aria-hidden="true"
-      class="size-[26px]"
+      class="size-6.5"
       viewBox="0 0 72 72"
     >
       <rect
@@ -49,6 +49,6 @@
         />
       </g>
     </svg>
-    <span class="display-xs text-highlighted">Формула 1</span>
+    <span class="display-xxs sm:display-xs text-highlighted">Формула 1</span>
   </NuxtLink>
 </template>

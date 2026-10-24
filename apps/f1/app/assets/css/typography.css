@@ -23,6 +23,7 @@
 @utility display-m { @apply display; font-size: 32px; }
 @utility display-s { @apply display; font-size: 24px; }
 @utility display-xs { @apply display; font-size: 18px; letter-spacing: 0; }
+@utility display-xxs { @apply display; font-size: 14px; letter-spacing: 0; }
 
 /* Text — обычный текст */
 @utility text-style {
