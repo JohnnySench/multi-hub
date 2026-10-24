@@ -29,5 +29,30 @@ export default defineNuxtConfig({
       mocks: { driver: 'fs', base: './server/mocks/f1' },
     },
   },
-  css: [fileURLToPath(new URL('./app/assets/css/main.css', import.meta.url))],
+  css: [
+    fileURLToPath(new URL('./app/assets/css/main.css', import.meta.url)),
+    fileURLToPath(new URL('./app/assets/css/typography.css', import.meta.url)),
+  ],
+  fonts: {
+    families: [
+      {
+        name: 'Roboto Flex',
+        subsets: ['cyrillic', 'latin'],
+        styles: ['normal'],
+        weights: ['100 1000'],
+        providerOptions: {
+          google: {
+            experimental: {
+              variableAxis: {
+                wdth: [['151', '151']],
+                slnt: [['-10', '0']],
+              },
+            },
+          },
+        },
+      },
+      { name: 'Geist', subsets: ['cyrillic', 'latin'], styles: ['normal'] },
+      { name: 'JetBrains Mono', subsets: ['cyrillic', 'latin'], styles: ['normal'] },
+    ],
+  },
 })
