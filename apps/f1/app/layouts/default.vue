@@ -9,7 +9,8 @@
     <AppSidebar class="hidden overflow-auto sm:col-span-1 sm:row-start-2 sm:flex" />
     <main
       class="
-        col-span-1 min-w-0 overflow-auto overflow-x-hidden overflow-y-auto
+        col-span-1 min-w-0 overflow-x-hidden overflow-y-auto
+        max-sm:scroll-progress
         sm:col-span-2 sm:rounded-lg sm:bg-muted sm:p-6
       "
     >

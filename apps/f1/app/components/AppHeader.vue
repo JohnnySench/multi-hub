@@ -40,7 +40,7 @@
       <UInput
         v-model.trim="query"
         :ui="{
-          base: 'sm:w-50 md:w-70 lg:90',
+          base: 'sm:w-50 md:w-70 lg:w-90',
         }"
         class="hidden sm:block"
         icon="i-lucide-search"

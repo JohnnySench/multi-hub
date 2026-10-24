@@ -2,6 +2,7 @@
    Схема одна, тёмная (class="dark" на <html> в nuxt.config) */
 @import "@multi/ui/css";
 @import "./typography.css";
+@import "./scroll.css";
 
 @theme static {
   /* шрифты → font-display / font-text / font-num */

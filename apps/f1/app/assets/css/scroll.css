@@ -1,0 +1,47 @@
+@layer base {
+  /* Chrome, Edge, Safari */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track,
+  ::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    background: var(--color-carbon-700);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-pitwall-400);
+  }
+
+  @supports not selector(::-webkit-scrollbar) {
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: var(--color-carbon-700) transparent;
+    }
+  }
+}
+
+@keyframes scroll-progress {
+  to { transform: scaleX(1); }
+}
+
+@utility scroll-progress {
+  &::before {
+    content: '';
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: block;
+    height: 3px;
+    margin-bottom: -3px;
+    border-radius: 999px;
+    background: var(--color-pitwall-400);
+    transform: scaleX(0);
+    transform-origin: left;
+    animation: scroll-progress linear both;
+    animation-timeline: scroll(nearest);
+  }
+}
