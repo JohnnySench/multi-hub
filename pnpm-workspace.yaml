@@ -31,3 +31,4 @@ catalog:
   "nuxt-open-fetch": "^0.13.9"
   "@vite-pwa/nuxt": "1.1.1"
   "cross-env": "^10.1.0"
+  "eslint-plugin-better-tailwindcss": "^4.10.0"

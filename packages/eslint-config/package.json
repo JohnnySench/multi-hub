@@ -1,9 +1,11 @@
 {
   "name": "@multi/eslint-config",
-  "private": true,
   "type": "module",
+  "private": true,
   "exports": "./index.mjs",
   "dependencies": {
-    "@antfu/eslint-config": "catalog:"
+    "@antfu/eslint-config": "catalog:",
+    "eslint-plugin-better-tailwindcss": "catalog:",
+    "tailwindcss": "catalog:"
   }
 }

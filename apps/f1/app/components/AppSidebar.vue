@@ -23,19 +23,19 @@
       childList: 'ms-0 border-0',
       childItem: 'ps-0 ms-0',
     }"
-    class="bg-muted rounded-lg p-3"
+    class="rounded-lg bg-muted p-3"
     color="neutral"
     orientation="vertical"
   >
     <template #list-trailing>
-      <div class="mt-auto bg-elevated rounded-xl p-3">
+      <div class="mt-auto rounded-xl bg-elevated p-3">
         <div class="flex flex-row items-start gap-2">
-          <div class="mt-1.5 size-2 rounded-full bg-accent ring-4 ring-accent/25 animate-pulse" />
+          <div class="mt-1.5 size-2 animate-pulse rounded-full bg-accent ring-4 ring-accent/25" />
           <p class="text-m-strong text-highlighted">
             Практика 1 · через 5 дней
           </p>
         </div>
-        <p class="text-label text-muted mt-1">
+        <p class="mt-1 text-label text-muted">
           Гран-при США · данные — после финиша сессии
         </p>
       </div>

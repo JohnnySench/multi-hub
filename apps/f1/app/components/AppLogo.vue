@@ -1,6 +1,6 @@
 <template>
   <NuxtLink
-    class="flex items-center gap-3 shrink-0"
+    class="flex shrink-0 items-center gap-1 sm:gap-3"
     to="/"
   >
     <svg
@@ -49,6 +49,6 @@
         />
       </g>
     </svg>
-    <span class="display-xxs sm:display-xs text-highlighted">Формула 1</span>
+    <span class="display-xxs text-highlighted sm:display-xs">Формула 1</span>
   </NuxtLink>
 </template>

@@ -5,7 +5,7 @@ import { F1ApiMode } from './shared/utils/f1ApiMode.ts'
 
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
-  devtools: { enabled: true },
+  devtools: { enabled: false },
   runtimeConfig: {
     /** Только в папке server */
     f1BaseUrl: 'https://api.openf1.org/v1',
