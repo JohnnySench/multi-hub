@@ -32,3 +32,4 @@ catalog:
   "@vite-pwa/nuxt": "1.1.1"
   "cross-env": "^10.1.0"
   "eslint-plugin-better-tailwindcss": "^4.10.0"
+  "dayjs": "^1.11.13"

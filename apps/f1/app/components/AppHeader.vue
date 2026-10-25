@@ -22,7 +22,7 @@
     },
   ]
 
-  const selectedOption = shallowRef(2026)
+  const selectedOption = useRouteQuery('season', 2026, { mode: 'push' })
 </script>
 
 <template>

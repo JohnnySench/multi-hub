@@ -21,6 +21,7 @@
     "@vueuse/core": "catalog:",
     "@vueuse/nuxt": "catalog:",
     "@vueuse/router": "catalog:",
+    "dayjs": "catalog:",
     "nuxt": "catalog:",
     "nuxt-open-fetch": "catalog:",
     "vue": "catalog:",

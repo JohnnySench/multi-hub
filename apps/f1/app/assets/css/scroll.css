@@ -8,6 +8,13 @@
   ::-webkit-scrollbar-corner {
     background: transparent;
   }
+  /* Не заезжать на скругления контейнера: отступ по самому крупному радиусу */
+  ::-webkit-scrollbar-track:vertical {
+    margin-block: var(--radius-lg);
+  }
+  ::-webkit-scrollbar-track:horizontal {
+    margin-inline: var(--radius-lg);
+  }
   ::-webkit-scrollbar-thumb {
     border-radius: 999px;
     background: var(--color-carbon-700);

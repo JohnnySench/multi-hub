@@ -11,6 +11,12 @@ export default defineNuxtConfig({
     f1BaseUrl: 'https://api.openf1.org/v1',
     f1ApiMode: F1ApiMode.Live,
   },
+  imports: {
+    dirs: [
+      '~/composables/**',
+      '~~/shared/utils/**',
+    ],
+  },
   extends: [
     '@multi/ui',
   ],
