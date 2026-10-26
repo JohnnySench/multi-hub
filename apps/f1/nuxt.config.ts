@@ -13,6 +13,7 @@ export default defineNuxtConfig({
   },
   imports: {
     dirs: [
+      '~/components/**',
       '~/composables/**',
       '~~/shared/utils/**',
     ],
