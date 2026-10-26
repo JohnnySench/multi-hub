@@ -17,9 +17,10 @@
       header: 'Поз',
       cell: ({ row }) => {
         const position = row.original.position
-        /** Тройка — крупнее и белым, остальные — мельче и приглушённо */
         const isPodium = position !== null && position <= 3
-        return h('span', { class: isPodium ? 'display-s' : 'display-xs text-muted' }, position ?? '—')
+        return h('span', { class: 'flex h-6 items-center' }, [
+          h('span', { class: isPodium ? 'display-s' : 'display-xs text-muted' }, position ?? '—'),
+        ])
       },
     },
     {
@@ -50,7 +51,6 @@
         if (!row.original.isFastest) {
           return h('span', { class: 'num-body' }, row.original.lapDuration)
         }
-        /** Лучший круг сессии — status/fastest */
         return h('span', { class: 'num-body inline-flex items-center gap-1 text-fastest' }, [
           h(UIcon, { name: 'i-lucide-zap', class: 'size-3.5' }),
           row.original.lapDuration,
