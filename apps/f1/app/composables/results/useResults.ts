@@ -25,18 +25,6 @@ interface ParamsCreateIndexes {
   laps: Lap[]
 }
 
-export interface ResultRow {
-  position: SessionResult['position']
-  nameAcronym: Driver['name_acronym']
-  fullName: Driver['full_name']
-  teamName: Driver['team_name']
-  teamColor: Driver['team_colour']
-  points: SessionResult['points']
-  duration: string
-  lapDuration: string
-  compound: Stint['compound'][]
-}
-
 export function useResults() {
   const { $f1 } = useNuxtApp()
 
@@ -51,7 +39,8 @@ export function useResults() {
     }
   }
 
-  function format({ sessionResult, driver, stints, laps }: ItemHandleResult) {
+  function format({ sessionResult, driver, stints, laps }: ItemHandleResult): ResultRow {
+    const lapTime = getLapDuration(laps)
     return {
       position: sessionResult.position,
       points: sessionResult.points,
@@ -60,8 +49,11 @@ export function useResults() {
       fullName: driver.full_name,
       teamName: driver.team_name,
       teamColor: driver.team_colour,
-      lapDuration: formatTime(getLapDuration(laps)),
+      lapTime,
+      lapDuration: formatTime(lapTime),
+      isFastest: false,
       compound: getCompound(stints),
+      pits: getPitCount(stints),
     }
   }
 
@@ -69,13 +61,22 @@ export function useResults() {
     const items: ResultRow[] = []
     const { driverIndexes, stintIndexes, lapIndexes } = createIndexes({ drivers, stints, laps })
     for (const sessionResult of sessionResults) {
+      const driver = driverIndexes.get(sessionResult.driver_number)
+      if (!driver) {
+        continue
+      }
       const item: ItemHandleResult = {
         sessionResult,
-        driver: driverIndexes.get(sessionResult.driver_number)!,
-        stints: stintIndexes.get(sessionResult.driver_number)!,
-        laps: lapIndexes.get(sessionResult.driver_number)!,
+        driver,
+        stints: stintIndexes.get(sessionResult.driver_number) ?? [],
+        laps: lapIndexes.get(sessionResult.driver_number) ?? [],
       }
       items.push(format(item))
+    }
+    /** Лучший круг сессии — минимум среди лучших кругов пилотов */
+    const fastest = getFastestLapTime(items)
+    for (const item of items) {
+      item.isFastest = fastest !== null && item.lapTime === fastest
     }
     return items
   }
@@ -92,6 +93,5 @@ export function useResults() {
 
   return {
     results,
-    bestLapDuration: computed(() => getBestLapDuration(results.value)),
   }
 }

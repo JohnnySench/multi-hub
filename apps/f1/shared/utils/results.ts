@@ -1,6 +1,6 @@
 import type { components } from '#open-fetch-schemas/f1'
 
-import type { ResultRow } from '~/composables/results/useResults.ts'
+import type { ResultRow } from '../types/results'
 import dayjs from 'dayjs'
 import duration from 'dayjs/plugin/duration'
 
@@ -17,15 +17,17 @@ type SessionResult = components['schemas']['SessionResult']
 type Stint = components['schemas']['Stint']
 type Lap = components['schemas']['Lap']
 
+/** Лучший круг пилота в секундах; круги без времени (въезд в пит, красный флаг) пропускаем */
 export function getLapDuration(laps: Lap[]) {
-  let min = laps[0]?.lap_duration ?? Infinity
+  let min: number | null = null
   for (const lap of laps) {
-    if (lap.lap_duration && lap.lap_duration < min) {
+    if (lap.lap_duration != null && (min === null || lap.lap_duration < min)) {
       min = lap.lap_duration
     }
   }
   return min
 }
+
 export function getRaceDuration(sessionResult: SessionResult) {
   const status = resultStatus(sessionResult)
   if (status !== ResultStatus.Finished) {
@@ -67,19 +69,23 @@ export function formatGap(gap: SessionResult['gap_to_leader']) {
 }
 
 export function getCompound(stints: Stint[]) {
-  return stints.toSorted().map(stint => stint.compound)
+  return stints
+    .toSorted((a, b) => a.stint_number - b.stint_number)
+    .map(stint => stint.compound)
 }
 
-export function getBestLapDuration(results: ResultRow[] | undefined) {
-  if (results && results.length) {
-    let minLapDuration = results[0]?.lapDuration ?? Infinity
-    let driver: ResultRow = results[0]!
-    for (const result of results) {
-      if (result.lapDuration && result.lapDuration < minLapDuration) {
-        minLapDuration = result.lapDuration
-        driver = result
-      }
+/** Пит-стопов на один меньше, чем отрезков на шинах */
+export function getPitCount(stints: Stint[]) {
+  return Math.max(stints.length - 1, 0)
+}
+
+/** Лучший круг сессии: сравниваем секунды, а не отформатированные строки */
+export function getFastestLapTime(results: ResultRow[]) {
+  let min: number | null = null
+  for (const result of results) {
+    if (result.lapTime !== null && (min === null || result.lapTime < min)) {
+      min = result.lapTime
     }
-    return driver
   }
+  return min
 }

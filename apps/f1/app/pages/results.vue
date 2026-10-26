@@ -1,6 +1,5 @@
 <script setup lang="ts">
   import type { TableColumn } from '#ui/types'
-  import Filters from '~/components/results/Filters.vue'
 
   definePageMeta({
     title: 'Результаты',
@@ -10,11 +9,18 @@
 
   const CellCompound = resolveComponent('ResultsCellCompound')
   const CellDriver = resolveComponent('ResultsCellDriver')
+  const UIcon = resolveComponent('UIcon')
 
   const columns: TableColumn<ResultRow>[] = [
     {
       accessorKey: 'position',
-      header: 'Позиция',
+      header: 'Поз',
+      cell: ({ row }) => {
+        const position = row.original.position
+        /** Тройка — крупнее и белым, остальные — мельче и приглушённо */
+        const isPodium = position !== null && position <= 3
+        return h('span', { class: isPodium ? 'display-s' : 'display-xs text-muted' }, position ?? '—')
+      },
     },
     {
       accessorKey: 'nameAcronym',
@@ -35,10 +41,21 @@
     {
       accessorKey: 'duration',
       header: 'Время / отставание',
+      cell: ({ row }) => h('span', { class: 'num-body text-highlighted' }, row.original.duration),
     },
     {
       accessorKey: 'lapDuration',
       header: 'Лучший круг',
+      cell: ({ row }) => {
+        if (!row.original.isFastest) {
+          return h('span', { class: 'num-body' }, row.original.lapDuration)
+        }
+        /** Лучший круг сессии — status/fastest */
+        return h('span', { class: 'num-body inline-flex items-center gap-1 text-fastest' }, [
+          h(UIcon, { name: 'i-lucide-zap', class: 'size-3.5' }),
+          row.original.lapDuration,
+        ])
+      },
     },
     {
       accessorKey: 'compound',
@@ -48,8 +65,15 @@
       },
     },
     {
+      accessorKey: 'pits',
+      header: 'Пит',
+      cell: ({ row }) => h('span', { class: 'num-body' }, row.original.pits),
+    },
+    {
       accessorKey: 'points',
       header: 'Очки',
+      meta: { class: { th: 'text-right', td: 'text-right' } },
+      cell: ({ row }) => h('span', { class: 'num-body text-highlighted' }, row.original.points ?? 0),
     },
   ]
 </script>
@@ -62,10 +86,11 @@
     <p class="text-muted">
       Этап 17 · 62 круга · 11 октября
     </p>
-    <Filters />
+    <ResultsFilters />
     <UTable
       :columns="columns"
       :data="results"
+      :meta="{ class: { tr: row => row.original.position === 1 ? 'bg-accent-tint' : '' } }"
       :ui="{
         root: 'bg-elevated p-3 rounded-lg',
         base: 'border-separate border-spacing-y-1 border-spacing-x-0',
