@@ -21,4 +21,5 @@ export interface ResultRow {
   isFastest: boolean
   compound: Stint['compound'][]
   pits: number
+  laps: number | null
 }

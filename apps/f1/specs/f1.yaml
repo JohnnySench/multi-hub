@@ -953,9 +953,9 @@ components:
           type: [integer, "null"]
           examples: [13]
         compound:
-          description: Состав шин. Список — известные значения; новое значение поймает проверка дрейфа (#58).
-          type: string
-          enum: [SOFT, MEDIUM, HARD, INTERMEDIATE, WET]
+          description: Состав шин. Список — известные значения; новое значение поймает проверка дрейфа (#58). UNKNOWN, TEST_UNKNOWN и null бывают в тестах и на старых гонках.
+          type: [string, "null"]
+          enum: [SOFT, MEDIUM, HARD, INTERMEDIATE, WET, UNKNOWN, TEST_UNKNOWN, null]
         tyre_age_at_start:
           description: Возраст комплекта на старте стинта, в кругах. Больше 0 — б/у комплект.
           type: integer
@@ -1081,6 +1081,8 @@ components:
     SessionResult:
       type: object
       required:
+        - meeting_key
+        - session_key
         - driver_number
         - position
         - number_of_laps

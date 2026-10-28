@@ -1,10 +1,10 @@
 import type { components } from '#open-fetch-schemas/f1'
 
 import type { ResultRow } from '../types/results'
-import dayjs from 'dayjs'
-import duration from 'dayjs/plugin/duration'
 
-dayjs.extend(duration)
+/** Дополнение нулями слева: 5 → «05», 7 → «007» */
+const pad2 = new Intl.NumberFormat('ru', { minimumIntegerDigits: 2, useGrouping: false })
+const pad3 = new Intl.NumberFormat('ru', { minimumIntegerDigits: 3, useGrouping: false })
 
 export enum ResultStatus {
   Finished = 'finished',
@@ -53,8 +53,15 @@ export function resultStatus(r: SessionResult): ResultStatus {
 export function formatTime(seconds: number | null) {
   if (seconds == null)
     return '—'
-  const format = seconds >= 3600 ? 'H:mm:ss.SSS' : 'm:ss.SSS'
-  return dayjs.duration(seconds, 'seconds').format(format)
+  /** Считаем в целых миллисекундах, чтобы не ловить 95.676 → 95.67599999 */
+  const totalMs = Math.round(seconds * 1000)
+  const h = Math.floor(totalMs / 3_600_000)
+  const m = Math.floor(totalMs / 60_000) % 60
+  const s = Math.floor(totalMs / 1000) % 60
+  const ms = totalMs % 1000
+  const tail = `${pad2.format(s)}.${pad3.format(ms)}`
+  /** Гонка — H:mm:ss.SSS, круг — m:ss.SSS */
+  return h > 0 ? `${h}:${pad2.format(m)}:${tail}` : `${m}:${tail}`
 }
 
 export function formatGap(gap: SessionResult['gap_to_leader']) {

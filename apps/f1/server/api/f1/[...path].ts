@@ -5,9 +5,13 @@ export default defineCachedEventHandler(async (event) => {
   const path = getRouterParam(event, 'path')
   const query = getQuery(event)
   const storage = useStorage('mocks')
+  /**
+   * Фильтр-диапазон OpenF1 `meeting_key>=1253` приходит ключом `meeting_key>`.
+   * Символы < и > нельзя в имени файла на Windows — в имени мока пишем _gte / _lte
+   */
   const hashQuery = Object.entries(query)
     .sort()
-    .map(([k, v]) => `${k}=${v}`)
+    .map(([k, v]) => `${k.replace('>', '_gte').replace('<', '_lte')}=${v}`)
     .join('&')
   const hashKey = `${path}:${hashQuery}.json`
 
@@ -20,6 +24,10 @@ export default defineCachedEventHandler(async (event) => {
     return response
   }
   if (config.f1ApiMode === F1ApiMode.Replay) {
+    /** Моки отвечают мгновенно — для проверки загрузки имитируем сеть (NUXT_F1_MOCK_DELAY) */
+    if (config.f1MockDelay > 0) {
+      await new Promise(resolve => setTimeout(resolve, config.f1MockDelay))
+    }
     const cachedResponse = await storage.getItem(hashKey)
     if (cachedResponse) {
       return cachedResponse

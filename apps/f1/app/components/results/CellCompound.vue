@@ -4,18 +4,26 @@
     compound: Compound
   }>()
 
+  /** Состав без null: null — отдельный случай ниже */
+  type KnownCompound = NonNullable<Compound[number]>
+
   const compoundUi = {
     SOFT: 'bg-tyre-s',
     MEDIUM: 'bg-tyre-m',
     HARD: 'bg-tyre-h',
     INTERMEDIATE: 'bg-tyre-i',
     WET: 'bg-tyre-w',
-  } satisfies Record<Compound[number], string>
+    /** Неизвестный состав (тесты, старые гонки) — серый кружок с «?» */
+    UNKNOWN: 'bg-carbon-400',
+    TEST_UNKNOWN: 'bg-carbon-400',
+  } satisfies Record<KnownCompound, string>
+
+  const UNKNOWN_COMPOUNDS = new Set<Compound[number]>([null, 'UNKNOWN', 'TEST_UNKNOWN'])
 
   const tyres = computed(() => props.compound.map((c) => {
     return {
-      compoundStyle: compoundUi[c],
-      compoundTyre: c[0],
+      compoundStyle: compoundUi[c ?? 'UNKNOWN'],
+      compoundTyre: UNKNOWN_COMPOUNDS.has(c) ? '?' : c?.[0],
     }
   }))
 </script>

@@ -106,6 +106,23 @@
   --color-team-racing-bulls: #6C98FF;
   --color-team-audi: #F50537;
   --color-team-cadillac: #909090;
+
+  /* анимации загрузки → animate-start-light, animate-sweep */
+  --animate-start-light: start-light 2s infinite both;
+  --animate-sweep: sweep 1.4s infinite;
+
+  /* стартовые огни: загораются по очереди, держатся и гаснут разом */
+  @keyframes start-light {
+    0%, 12% { background: var(--color-carbon-700); }
+    18%, 82% { background: var(--color-pitwall-300); box-shadow: 0 0 8px var(--color-pitwall-400); }
+    88%, 100% { background: var(--color-carbon-700); }
+  }
+
+  /* блик по строке слева направо */
+  @keyframes sweep {
+    from { transform: translateX(-100%); }
+    to { transform: translateX(100%); }
+  }
 }
 
 /* семантика Nuxt UI → Pit wall: bg-default, bg-muted, bg-elevated, border-default, text-highlighted, text-default, text-muted */

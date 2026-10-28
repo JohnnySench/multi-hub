@@ -25,7 +25,12 @@ interface ParamsCreateIndexes {
   laps: Lap[]
 }
 
-export function useResults() {
+interface UseResults {
+  /** Ключ сессии, уже с умолчанием — его считает страница */
+  sessionKey: MaybeRefOrGetter<number | undefined>
+}
+
+export async function useResults({ sessionKey }: UseResults) {
   const { $f1 } = useNuxtApp()
 
   function createIndexes({ drivers, stints, laps }: ParamsCreateIndexes) {
@@ -54,6 +59,7 @@ export function useResults() {
       isFastest: false,
       compound: getCompound(stints),
       pits: getPitCount(stints),
+      laps: sessionResult.number_of_laps,
     }
   }
 
@@ -73,7 +79,6 @@ export function useResults() {
       }
       items.push(format(item))
     }
-    /** Лучший круг сессии — минимум среди лучших кругов пилотов */
     const fastest = getFastestLapTime(items)
     for (const item of items) {
       item.isFastest = fastest !== null && item.lapTime === fastest
@@ -81,17 +86,24 @@ export function useResults() {
     return items
   }
 
-  const { data: results } = useLazyAsyncData('results', async () => {
+  const { data: results, pending } = await useAsyncData(() => `results-${toValue(sessionKey)}`, async (_nuxtApp, { signal }) => {
+    const key = toValue(sessionKey)
+    if (key === undefined) {
+      return []
+    }
     const [sessionResults, drivers, stints, laps] = await Promise.all([
-      $f1('/session_result', { query: { session_key: 'latest' } }),
-      $f1('/drivers', { query: { session_key: 'latest' } }),
-      $f1('/stints', { query: { session_key: 'latest' } }),
-      $f1('/laps', { query: { session_key: 'latest' } }),
+      $f1('/session_result', { query: { session_key: key }, signal }),
+      $f1('/drivers', { query: { session_key: key }, signal }),
+      $f1('/stints', { query: { session_key: key }, signal }),
+      $f1('/laps', { query: { session_key: key }, signal }),
     ])
     return handleResults({ sessionResults, drivers, stints, laps })
+  }, {
+    default: () => [],
   })
 
   return {
     results,
+    pending,
   }
 }
