@@ -94,7 +94,7 @@
   <UModal v-model:open="open" :ui="{ content: 'max-w-xl rounded-lg bg-muted ring-0' }">
     <template #content>
       <UCommandPalette
-        :fuse="{ fuseOptions: { keys: ['label', 'suffix', 'prefix'] } }"
+        :fuse="{ resultLimit: 40, fuseOptions: { keys: ['label', 'suffix', 'prefix'] } }"
         :groups="groups"
         :loading="status === 'pending'"
         :ui="{

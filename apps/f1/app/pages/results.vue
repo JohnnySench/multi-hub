@@ -46,22 +46,27 @@
     /** У этапа, где ещё ни одна сессия не прошла, сессии нет — не пишем «undefined» */
     return [meetingName, sessionName].filter(Boolean).join(' · ')
   })
-  /** Круги в подзаголовке — только у гонки и спринта: в практике и квале у P1 своё число */
-  const LAP_SESSIONS = new Set<string>([SessionName.Race, SessionName.Sprint])
+  /** Круги и победитель в подзаголовке — только у гонки и спринта: в практике и квале у P1 своё число */
+  const RACE_SESSIONS = new Set<string>([SessionName.Race, SessionName.Sprint])
 
-  /** «Этап 17 · 62 круга · 11 октября»: пустые части пропускаем */
-  const description = computed(() => {
+  /** Данные для плашки под заголовком: этап, место, круги, старт, победитель */
+  const strip = computed(() => {
     const currentMeeting = meetings.value.find(m => m.meetingKey === meetingKey.value)
     const currentSession = sessions.value.find(s => s.sessionKey === sessionKey.value)
-    const laps = results.value.find(r => r.position === 1)?.laps
+    const isRace = !!currentSession && RACE_SESSIONS.has(currentSession.sessionName)
+    /** results, а не visibleResults: на смене таба там ещё строки прошлой сессии */
+    const leader = isRace ? results.value.find(r => r.position === 1) : undefined
 
-    const round = currentMeeting?.round ? `Этап ${currentMeeting.round}` : currentMeeting?.isTesting ? 'Тесты' : null
-    const lapsText = laps && currentSession && LAP_SESSIONS.has(currentSession.sessionName)
-      ? pluralize(laps, { one: 'круг', few: 'круга', many: 'кругов' })
-      : null
-    const date = currentSession ? formatDayMonth(currentSession.dateStart) : null
-
-    return [round, lapsText, date].filter(Boolean).join(' · ')
+    return {
+      round: currentMeeting?.round ?? null,
+      isTesting: currentMeeting?.isTesting ?? false,
+      place: currentMeeting?.location,
+      laps: leader?.laps,
+      startedAt: currentSession?.dateStart,
+      winner: leader,
+      /** Заглушка кругов и победителя — только пока грузится гонка или спринт */
+      loading: isRace && isTableLoading.value,
+    }
   })
 
   const selectedMeeting = computed({
@@ -154,9 +159,7 @@
     <h1 class="display-xl">
       {{ title }}
     </h1>
-    <p class="text-muted">
-      {{ description }}
-    </p>
+    <ResultsSessionStrip v-bind="strip" />
     <div class="flex items-center justify-between gap-4">
       <ResultsFilters
         v-model:meeting-key="selectedMeeting"
