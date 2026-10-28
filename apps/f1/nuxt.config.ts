@@ -10,6 +10,22 @@ export default defineNuxtConfig({
     /** Только в папке server */
     f1BaseUrl: 'https://api.openf1.org/v1',
     f1ApiMode: F1ApiMode.Live,
+    /** Задержка ответа моков в replay, мс — чтобы видеть скелетоны и загрузку */
+    f1MockDelay: 0,
+    dbUrl: '',
+  },
+  typescript: {
+    nodeTsConfig: {
+      include: ['../drizzle.config.ts'],
+      compilerOptions: { types: ['node'] },
+    },
+  },
+  imports: {
+    dirs: [
+      '~/components/**',
+      '~/composables/**',
+      '~~/shared/utils/**',
+    ],
   },
   extends: [
     '@multi/ui',
@@ -21,7 +37,6 @@ export default defineNuxtConfig({
     '@vueuse/nuxt',
   ],
   eslint: { config: { standalone: false } },
-  /** Pit wall только тёмный: класс dark сразу в HTML, переключателя нет */
   ui: { colorMode: false },
   app: {
     head: {
@@ -43,7 +58,6 @@ export default defineNuxtConfig({
     workbox: {
       globPatterns: ['**/*.{js,css,html,ico,png,svg,webp,woff2}'],
       globIgnores: ['screenshots/**'],
-      // SSR: страницы не пререндерятся, кэшировать «/» как запасной ответ нельзя
       navigateFallback: null,
     },
     devOptions: {
@@ -53,14 +67,23 @@ export default defineNuxtConfig({
   openFetch: {
     clients: {
       f1: {
-        baseURL: '/api/f1', /** Ходит на наш сервак nitro */
+        baseURL: '/api/f1', /** Прокси через nitro */
         schema: './specs/f1.yaml',
       },
     },
   },
   nitro: {
+    storage: {
+      cache: {
+        driver: 'fs',
+        base: './.data/cache', /** PROD: Кеш ручек server/api/[...path].ts на диск */
+      },
+    },
     devStorage: {
-      mocks: { driver: 'fs', base: './server/mocks/f1' },
+      mocks: {
+        driver: 'fs',
+        base: './server/mocks/f1', /** DEV: Запись ответов ручек для удобства разработки */
+      },
     },
   },
   css: [fileURLToPath(new URL('./app/assets/css/main.css', import.meta.url))],

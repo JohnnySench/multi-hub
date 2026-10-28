@@ -32,3 +32,6 @@ catalog:
   "@vite-pwa/nuxt": "1.1.1"
   "cross-env": "^10.1.0"
   "eslint-plugin-better-tailwindcss": "^4.10.0"
+  "drizzle-kit": "1.0.0-rc.5"
+  "drizzle-orm": "1.0.0-rc.5"
+  "postgres": "^3.4.9"

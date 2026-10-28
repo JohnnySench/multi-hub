@@ -21,6 +21,7 @@ logs
 # Local env files
 .env
 apps/f1/.env
+apps/f1/server/mocks
 .env.*
 !.env.example
 
