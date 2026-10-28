@@ -58,8 +58,10 @@ export default defineCachedEventHandler(async (event): Promise<SeasonWinner[]> =
   }
   return winners
 }, {
-  /** Победители прошедших гонок не меняются — держим сутки */
-  maxAge: 60 * 60 * 24,
+  /** Час, как у прокси: в текущем сезоне победитель новой гонки должен появиться в тот же день */
+  maxAge: 60 * 60,
+  /** Устарело — отдаём прежний список и обновляем в фоне */
+  swr: true,
   /** Как у прокси: кэш только в live, в dev на моках — каждый раз заново */
   shouldBypassCache: () => useRuntimeConfig().f1ApiMode !== F1ApiMode.Live,
 })

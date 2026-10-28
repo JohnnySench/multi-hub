@@ -9,15 +9,22 @@
   const { session } = useSelectedSession()
 
   const { meetings } = await useMeetings()
+  /** Этапы с гонкой: у тестов результатов гонки нет, поэтому их не выбираем и не берём по умолчанию */
   const meetingKey = computed(() => {
-    const selected = meetings.value.find(item => item.meetingKey === meeting.value)
-    return (selected ?? findLastFinished(meetings.value))?.meetingKey
+    const raceMeetings = meetings.value.filter(item => !item.isTesting)
+    const selected = raceMeetings.find(item => item.meetingKey === meeting.value)
+    return (selected ?? findLastFinished(raceMeetings))?.meetingKey
   })
 
   const { sessions, pending: sessionsPending } = await useSessions({ meetingKey })
+  /**
+   * Таблица пока умеет только гоночные сессии (гонка, спринт): у квалы и практик свои колонки — #82.
+   * Сессия из адреса — если она гоночная и из этого этапа, иначе последняя завершившаяся гонка или спринт
+   */
   const sessionKey = computed(() => {
-    const selected = sessions.value.find(item => item.sessionKey === session.value)
-    return (selected ?? findLastFinished(sessions.value))?.sessionKey
+    const races = sessions.value.filter(item => isRaceSession(item.sessionName))
+    const selected = races.find(item => item.sessionKey === session.value)
+    return (selected ?? findLastFinished(races))?.sessionKey
   })
 
   const { results, pending: resultsPending } = await useResults({ sessionKey })
@@ -46,14 +53,11 @@
     /** У этапа, где ещё ни одна сессия не прошла, сессии нет — не пишем «undefined» */
     return [meetingName, sessionName].filter(Boolean).join(' · ')
   })
-  /** Круги и победитель в подзаголовке — только у гонки и спринта: в практике и квале у P1 своё число */
-  const RACE_SESSIONS = new Set<string>([SessionName.Race, SessionName.Sprint])
-
   /** Данные для плашки под заголовком: этап, место, круги, старт, победитель */
   const strip = computed(() => {
     const currentMeeting = meetings.value.find(m => m.meetingKey === meetingKey.value)
     const currentSession = sessions.value.find(s => s.sessionKey === sessionKey.value)
-    const isRace = !!currentSession && RACE_SESSIONS.has(currentSession.sessionName)
+    const isRace = !!currentSession && isRaceSession(currentSession.sessionName)
     /** results, а не visibleResults: на смене таба там ещё строки прошлой сессии */
     const leader = isRace ? results.value.find(r => r.position === 1) : undefined
 

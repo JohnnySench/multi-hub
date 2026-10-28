@@ -10,7 +10,14 @@ export const useSelectedYear = createSharedComposable(() => {
       label: 'Сезон 2025',
     },
   ]
-  const year = useRouteQuery('year', CURRENT_YEAR, { mode: 'replace', transform: Number })
+  /** ?year=abc или сезон, которого нет в списке, — показываем текущий, а не NaN */
+  const year = useRouteQuery('year', CURRENT_YEAR, {
+    mode: 'replace',
+    transform: (value) => {
+      const parsed = Number(value)
+      return YEARS.some(item => item.value === parsed) ? parsed : CURRENT_YEAR
+    },
+  })
 
   return {
     year,

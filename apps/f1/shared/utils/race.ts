@@ -30,6 +30,16 @@ export function getSessionLabel(sessionName: string) {
   return isSessionName(sessionName) ? SESSION_LABELS[sessionName] : sessionName
 }
 
+/**
+ * Гоночные сессии — у них в session_result время и отставание числами.
+ * Квалификация и практики (массивы Q1/Q2/Q3, свои колонки) — в #82
+ */
+const RACE_SESSIONS = new Set<string>([SessionName.Race, SessionName.Sprint])
+
+export function isRaceSession(sessionName: string) {
+  return RACE_SESSIONS.has(sessionName)
+}
+
 export function findLastFinished<T extends { dateEnd: string, isCancelled?: boolean }>(items: T[], now = Date.now()) {
   return items.findLast(item => !item.isCancelled && Date.parse(item.dateEnd) < now)
 }

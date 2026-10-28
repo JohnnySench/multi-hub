@@ -55,8 +55,8 @@
     return {
       label: session.label,
       value: session.sessionKey,
-      /** Результатов нет, пока сессия не закончилась */
-      disabled: state !== 'done',
+      /** Результатов нет, пока сессия не закончилась; квала и практики — в #82 */
+      disabled: state !== 'done' || !isRaceSession(session.sessionName),
       state,
       when: formatSessionTime(session.dateStart),
       ui: isNewDay
@@ -79,7 +79,8 @@
     return {
       ...meeting,
       isFuture,
-      disabled: meeting.isCancelled || isFuture,
+      /** У тестов гонки нет — таблице нечего показать */
+      disabled: meeting.isCancelled || isFuture || meeting.isTesting,
       dates: formatDateRange(meeting.dateStart, meeting.dateEnd),
       hasWinner: !isFuture && !meeting.isTesting && !meeting.isCancelled,
     }
