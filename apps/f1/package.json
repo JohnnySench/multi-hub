@@ -36,6 +36,8 @@
     "eslint": "catalog:",
     "tailwindcss": "catalog:",
     "typescript": "catalog:",
-    "vue-tsc": "catalog:"
+    "vue-tsc": "catalog:",
+    "workbox-core": "catalog:",
+    "workbox-precaching": "catalog:"
   }
 }
