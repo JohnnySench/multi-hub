@@ -1,0 +1,69 @@
+{
+  "type": "diff",
+  "version": "9",
+  "dialect": "postgres",
+  "id": "a1ee4e54-f7cb-4edf-ab4e-a87641364b1d",
+  "prevIds": [
+    "b239cdde-addc-41fe-80d4-2ea5a41783e7"
+  ],
+  "footprints": [
+    {
+      "statementType": "add_column",
+      "statementTarget": [
+        "column",
+        "public",
+        "f1_responses",
+        "fetched_at"
+      ],
+      "writes": [
+        "s|col|public.f1_responses.fetched_at",
+        "n|col|public.f1_responses.fetched_at",
+        "e|col|public.f1_responses.fetched_at"
+      ],
+      "reads": [
+        "n|tbl|public.f1_responses",
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "drop_column",
+      "statementTarget": [
+        "column",
+        "public",
+        "f1_responses",
+        "fetchedAt"
+      ],
+      "writes": [
+        "s|col|public.f1_responses.fetchedAt",
+        "n|col|public.f1_responses.fetchedAt",
+        "e|col|public.f1_responses.fetchedAt"
+      ],
+      "reads": [
+        "n|tbl|public.f1_responses",
+        "n|sch|public"
+      ]
+    }
+  ],
+  "deltas": [
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "f1_responses",
+        "name": "fetched_at",
+        "type": "timestamp with time zone",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": "now()",
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "drop",
+      "key": "columns\u0000[\"public\",\"f1_responses\",\"fetchedAt\"]"
+    }
+  ]
+}
