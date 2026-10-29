@@ -53,15 +53,22 @@ export default defineNuxtConfig({
     },
   },
   pwa: {
+    strategies: 'injectManifest',
+    srcDir: 'service-worker',
+    filename: 'sw.ts',
     registerType: 'autoUpdate',
-    manifest,
-    workbox: {
+    /**
+     * В режиме injectManifest блок workbox игнорируется — что класть в офлайн-кэш, задаётся здесь.
+     * Этот список при сборке подставится в sw.ts вместо self.__WB_MANIFEST
+     */
+    injectManifest: {
       globPatterns: ['**/*.{js,css,html,ico,png,svg,webp,woff2}'],
       globIgnores: ['screenshots/**'],
-      navigateFallback: null,
     },
+    manifest,
     devOptions: {
       enabled: true,
+      type: 'module',
     },
   },
   openFetch: {
