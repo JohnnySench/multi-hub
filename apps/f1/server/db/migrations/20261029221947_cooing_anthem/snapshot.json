@@ -1,0 +1,307 @@
+{
+  "type": "diff",
+  "version": "9",
+  "dialect": "postgres",
+  "id": "f5d24d09-fa94-4c5b-9079-da142ecf0165",
+  "prevIds": [
+    "a1ee4e54-f7cb-4edf-ab4e-a87641364b1d"
+  ],
+  "footprints": [
+    {
+      "statementType": "create_table",
+      "statementTarget": [
+        "table",
+        "public",
+        "f1_race_push_devices_free"
+      ],
+      "writes": [
+        "s|tbl|public.f1_race_push_devices_free",
+        "n|tbl|public.f1_race_push_devices_free",
+        "e|tbl|public.f1_race_push_devices_free",
+        "n|rel|public.f1_race_push_devices_free",
+        "n|type|public.f1_race_push_devices_free",
+        "n|rel|public.f1_race_push_devices_free_pkey",
+        "n|rel|public.f1_race_push_devices_free_endpoint_key"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": [
+        "table",
+        "public",
+        "f1_race_sent_notifications_free"
+      ],
+      "writes": [
+        "s|tbl|public.f1_race_sent_notifications_free",
+        "n|tbl|public.f1_race_sent_notifications_free",
+        "e|tbl|public.f1_race_sent_notifications_free",
+        "n|rel|public.f1_race_sent_notifications_free",
+        "n|type|public.f1_race_sent_notifications_free",
+        "n|rel|public.f1_race_sent_notifications_free_pkey"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "f1_race_sent_notifications_free"
+      ],
+      "writes": [
+        "s|fk|public.f1_race_sent_notifications_free.f1_race_sent_notifications_free_SHb2IDJROAnl_fkey",
+        "n|fk|public.f1_race_sent_notifications_free.f1_race_sent_notifications_free_SHb2IDJROAnl_fkey",
+        "e|fk|public.f1_race_sent_notifications_free.f1_race_sent_notifications_free_SHb2IDJROAnl_fkey",
+        "n|con|public.f1_race_sent_notifications_free.f1_race_sent_notifications_free_SHb2IDJROAnl_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.f1_race_sent_notifications_free",
+        "n|sch|public",
+        "n|tbl|public.f1_race_push_devices_free",
+        "n|sch|public",
+        "n|col|public.f1_race_sent_notifications_free.device_id",
+        "n|col|public.f1_race_push_devices_free.id",
+        "e|uniqueness|public.f1_race_push_devices_free.id"
+      ]
+    }
+  ],
+  "deltas": [
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "name": "f1_race_push_devices_free",
+        "isRlsEnabled": false,
+        "entityType": "tables"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "name": "f1_race_sent_notifications_free",
+        "isRlsEnabled": false,
+        "entityType": "tables"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "f1_race_push_devices_free",
+        "name": "id",
+        "type": "integer",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": {
+          "type": "always",
+          "name": "f1_race_push_devices_free_id_seq",
+          "increment": "1",
+          "startWith": "1",
+          "minValue": "1",
+          "maxValue": "2147483647",
+          "cache": 1,
+          "cycle": false
+        },
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "f1_race_push_devices_free",
+        "name": "endpoint",
+        "type": "text",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "f1_race_push_devices_free",
+        "name": "p256dh",
+        "type": "text",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "f1_race_push_devices_free",
+        "name": "auth",
+        "type": "text",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "f1_race_push_devices_free",
+        "name": "created_at",
+        "type": "timestamp with time zone",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "f1_race_push_devices_free",
+        "name": "last_seen_at",
+        "type": "timestamp with time zone",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "f1_race_sent_notifications_free",
+        "name": "device_id",
+        "type": "integer",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "f1_race_sent_notifications_free",
+        "name": "event",
+        "type": "text",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "f1_race_sent_notifications_free",
+        "name": "sent_at",
+        "type": "timestamp with time zone",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "f1_race_sent_notifications_free",
+        "name": "f1_race_sent_notifications_free_SHb2IDJROAnl_fkey",
+        "nameExplicit": false,
+        "columns": [
+          "device_id"
+        ],
+        "schemaTo": "public",
+        "tableTo": "f1_race_push_devices_free",
+        "columnsTo": [
+          "id"
+        ],
+        "onUpdate": "NO ACTION",
+        "onDelete": "CASCADE",
+        "entityType": "fks"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "f1_race_sent_notifications_free",
+        "name": "f1_race_sent_notifications_free_pkey",
+        "columns": [
+          "device_id",
+          "event"
+        ],
+        "nameExplicit": false,
+        "entityType": "pks"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "f1_race_push_devices_free",
+        "name": "f1_race_push_devices_free_pkey",
+        "columns": [
+          "id"
+        ],
+        "nameExplicit": false,
+        "entityType": "pks"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "f1_race_push_devices_free",
+        "name": "f1_race_push_devices_free_endpoint_key",
+        "nameExplicit": false,
+        "columns": [
+          "endpoint"
+        ],
+        "nullsNotDistinct": false,
+        "entityType": "uniques"
+      }
+    }
+  ]
+}
