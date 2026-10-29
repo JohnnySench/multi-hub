@@ -35,3 +35,7 @@ catalog:
   "drizzle-kit": "1.0.0-rc.5"
   "drizzle-orm": "1.0.0-rc.5"
   "postgres": "^3.4.9"
+  "@nuxt/fonts": "1.2.0"
+  "nuxt-og-image": "7.0.7"
+  "@takumi-rs/core": "2.15.0"
+  "@takumi-rs/wasm": "2.15.0"
