@@ -25,13 +25,28 @@ const DEFAULT_TITLE = 'Формула 1'
 /** Сообщение странице «перейди по адресу» — тот же тип слушает плагин sw-navigation.client.ts */
 const SW_NAVIGATE = 'sw:navigate'
 
-/** Битый JSON — показываем текст как есть, чтобы пуш не потерялся */
+/** Битый JSON — показываем текст как есть, чтобы пуш не потерялся; null или число — пустой объект */
 function readPayload(data: PushMessageData): PushPayload {
   try {
-    return data.json() as PushPayload
+    const parsed: unknown = data.json()
+    return typeof parsed === 'object' && parsed !== null ? parsed as PushPayload : {}
   }
   catch {
     return { body: data.text() }
+  }
+}
+
+/**
+ * Адрес из пуша → путь внутри нашего сайта, иначе главная.
+ * Отсекает чужие сайты в любом виде: «https://…», «//evil», «/\evil» (парсер URL читает «\» как «/»)
+ */
+function toSafePath(url: unknown): string {
+  try {
+    const parsed = new URL(typeof url === 'string' ? url : '/', self.location.origin)
+    return parsed.origin === self.location.origin ? `${parsed.pathname}${parsed.search}${parsed.hash}` : '/'
+  }
+  catch {
+    return '/'
   }
 }
 
@@ -49,7 +64,7 @@ self.addEventListener('push', (event) => {
        * badge — значок в строке состояния Android: одноцветный силуэт на прозрачном фоне.
        * Цветная иконка там станет белым квадратом, поэтому пока не задаём — Android покажет свой
        */
-      data: { url: payload.url || '/' },
+      data: { url: toSafePath(payload.url) },
     }),
   )
 })
@@ -67,7 +82,8 @@ self.addEventListener('push', (event) => {
  */
 self.addEventListener('notificationclick', (event) => {
   event.notification.close()
-  const path: string = event.notification.data?.url || '/'
+  /** Проверяем ещё раз: data уведомления мог задать не наш push-обработчик */
+  const path = toSafePath(event.notification.data?.url)
 
   event.waitUntil((async () => {
     const windows = await self.clients.matchAll({ type: 'window', includeUncontrolled: true })

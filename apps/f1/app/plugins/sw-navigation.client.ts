@@ -16,15 +16,30 @@ function isNavigateMessage(data: unknown): data is NavigateMessage {
     && typeof (data as NavigateMessage).url === 'string'
 }
 
-export default defineNuxtPlugin(() => {
+/** Только адреса нашего сайта: «/\evil» тоже начинается с «/», поэтому сверяем origin после разбора */
+function isOwnPath(url: string) {
+  try {
+    return new URL(url, location.origin).origin === location.origin
+  }
+  catch {
+    return false
+  }
+}
+
+export default defineNuxtPlugin((nuxtApp) => {
   if (!('serviceWorker' in navigator)) {
     return
   }
 
+  /**
+   * router.push, а не navigateTo: если сообщение придёт во время другого перехода (идёт middleware),
+   * navigateTo вернёт маршрут, но не перейдёт
+   */
+  const router = nuxtApp.$router
+
   navigator.serviceWorker.addEventListener('message', (event: MessageEvent) => {
-    /** Только внутренние пути: «/results?meeting=1270», не чужие адреса */
-    if (isNavigateMessage(event.data) && event.data.url.startsWith('/')) {
-      navigateTo(event.data.url)
+    if (isNavigateMessage(event.data) && isOwnPath(event.data.url)) {
+      router.push(event.data.url)
     }
   })
 
