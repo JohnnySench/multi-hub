@@ -6,10 +6,10 @@ export function isPushSubscriptionBody(body: unknown): body is PushSubscriptionB
   if (!('keys' in body) || !body.keys || typeof body.keys !== 'object') {
     return false
   }
-  if (!('p256dh' in body.keys) || typeof body.keys.p256dh !== 'string') {
+  if (!('p256dh' in body.keys) || typeof body.keys.p256dh !== 'string' || !body.keys.p256dh) {
     return false
   }
-  if (!('auth' in body.keys) || typeof body.keys.auth !== 'string') {
+  if (!('auth' in body.keys) || typeof body.keys.auth !== 'string' || !body.keys.auth) {
     return false
   }
   return true
@@ -20,5 +20,13 @@ export function isPushEndpointBody(body: unknown): body is Pick<PushSubscription
   if (!body || typeof body !== 'object') {
     return false
   }
-  return 'endpoint' in body && typeof body.endpoint === 'string'
+  return 'endpoint' in body && typeof body.endpoint === 'string' && isHttpsUrl(body.endpoint)
+}
+
+/**
+ * Endpoint push-сервиса всегда https. Робот шлёт на каждый адрес из push_devices,
+ * поэтому чужой адрес в базе — это запросы нашего сервера куда угодно (SSRF)
+ */
+function isHttpsUrl(value: string) {
+  return URL.canParse(value) && new URL(value).protocol === 'https:'
 }

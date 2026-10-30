@@ -70,13 +70,15 @@ export function usePushNotification() {
       if (!subscription) {
         return
       }
-      const isUnsub = await subscription.unsubscribe()
-      if (isUnsub) {
-        await $fetch('/api/push/unsubscribe', {
-          method: 'POST',
-          body: subscription.toJSON(),
-        })
-      }
+      /**
+       * Сначала сервер, потом браузер: упал запрос — браузер ещё подписан, можно повторить.
+       * Наоборот браузер забыл бы endpoint, и строка в push_devices осталась бы навсегда
+       */
+      await $fetch('/api/push/unsubscribe', {
+        method: 'POST',
+        body: { endpoint: subscription.endpoint },
+      })
+      await subscription.unsubscribe()
     }
     catch (error) {
       console.error(error)
