@@ -5,15 +5,8 @@ export default defineCachedEventHandler(async (event) => {
   const path = getRouterParam(event, 'path')
   const query = getQuery(event)
   const storage = useStorage('mocks')
-  /**
-   * Фильтр-диапазон OpenF1 `meeting_key>=1253` приходит ключом `meeting_key>`.
-   * Символы < и > нельзя в имени файла на Windows — в имени мока пишем _gte / _lte
-   */
-  const hashQuery = Object.entries(query)
-    .sort()
-    .map(([k, v]) => `${k.replace('>', '_gte').replace('<', '_lte')}=${v}`)
-    .join('&')
-  const hashKey = `${path}:${hashQuery}.json`
+
+  const hashKey = `${path}:${hashQuery(query)}.json`
 
   if (config.f1ApiMode === F1ApiMode.Live) {
     return await fetchF1(`${path}`, query)
