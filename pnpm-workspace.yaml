@@ -41,3 +41,5 @@ catalog:
   "@takumi-rs/wasm": "2.15.0"
   "workbox-core": "^7.4.1"
   "workbox-precaching": "^7.4.1"
+  "web-push": "^3.6.7"
+  "@types/web-push": "^3.6.4"

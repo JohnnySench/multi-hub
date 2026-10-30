@@ -4,7 +4,8 @@ export function useWinners() {
 
   /** Без immediate: грузим при первом открытии селекта, ключ — свой на каждый сезон */
   const { data: winners, status, execute } = useLazyAsyncData(() => `winners-${toValue(year)}`, async () => {
-    return await $fetch('/api/winners', { query: { year: toValue(year) } })
+    /** Тип ответа явно: вывод по адресу ручки перебирает все маршруты Nitro и падает с TS2321 на typecheck */
+    return await $fetch<SeasonWinner[]>('/api/winners', { query: { year: toValue(year) } })
   }, {
     immediate: false,
     default: () => [],

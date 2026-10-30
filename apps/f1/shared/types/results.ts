@@ -23,3 +23,10 @@ export interface ResultRow {
   pits: number
   laps: number | null
 }
+
+/** Победитель гонки этапа — для селекта этапов; отдаёт /api/winners */
+export interface SeasonWinner {
+  meetingKey: SessionResult['meeting_key']
+  nameAcronym: Driver['name_acronym']
+  teamColor: Driver['team_colour']
+}
