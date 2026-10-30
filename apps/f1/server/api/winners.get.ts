@@ -4,12 +4,6 @@ type Session = components['schemas']['Session']
 type SessionResult = components['schemas']['SessionResult']
 type Driver = components['schemas']['Driver']
 
-export interface SeasonWinner {
-  meetingKey: SessionResult['meeting_key']
-  nameAcronym: Driver['name_acronym']
-  teamColor: Driver['team_colour']
-}
-
 export default defineCachedEventHandler(async (event): Promise<SeasonWinner[]> => {
   const year = Number(getQuery(event).year)
 
