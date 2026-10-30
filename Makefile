@@ -21,6 +21,9 @@ up:
 down:
 	$(DC) down
 
+db-clear:
+	$(DC) down -v
+
 # Перезапуск
 restart:
 	$(DC) restart

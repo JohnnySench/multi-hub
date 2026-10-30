@@ -1,0 +1,422 @@
+{
+  "type": "diff",
+  "version": "9",
+  "dialect": "postgres",
+  "id": "cbf593b1-d2b1-47ad-8ab4-391850804fb0",
+  "prevIds": [
+    "f5d24d09-fa94-4c5b-9079-da142ecf0165"
+  ],
+  "footprints": [
+    {
+      "statementType": "create_table",
+      "statementTarget": [
+        "table",
+        "public",
+        "push_devices"
+      ],
+      "writes": [
+        "s|tbl|public.push_devices",
+        "n|tbl|public.push_devices",
+        "e|tbl|public.push_devices",
+        "n|rel|public.push_devices",
+        "n|type|public.push_devices",
+        "n|rel|public.push_devices_pkey",
+        "n|rel|public.push_devices_endpoint_key"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": [
+        "table",
+        "public",
+        "sent_notifications"
+      ],
+      "writes": [
+        "s|tbl|public.sent_notifications",
+        "n|tbl|public.sent_notifications",
+        "e|tbl|public.sent_notifications",
+        "n|rel|public.sent_notifications",
+        "n|type|public.sent_notifications",
+        "n|rel|public.sent_notifications_pkey"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "drop_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "f1_race_sent_notifications_free"
+      ],
+      "writes": [
+        "s|fk|public.f1_race_sent_notifications_free.f1_race_sent_notifications_free_SHb2IDJROAnl_fkey",
+        "n|fk|public.f1_race_sent_notifications_free.f1_race_sent_notifications_free_SHb2IDJROAnl_fkey",
+        "e|fk|public.f1_race_sent_notifications_free.f1_race_sent_notifications_free_SHb2IDJROAnl_fkey",
+        "n|con|public.f1_race_sent_notifications_free.f1_race_sent_notifications_free_SHb2IDJROAnl_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.f1_race_sent_notifications_free",
+        "n|sch|public",
+        "e|col|public.f1_race_sent_notifications_free.device_id"
+      ]
+    },
+    {
+      "statementType": "drop_table",
+      "statementTarget": [
+        "table",
+        "public",
+        "f1_race_push_devices_free"
+      ],
+      "writes": [
+        "s|tbl|public.f1_race_push_devices_free",
+        "n|tbl|public.f1_race_push_devices_free",
+        "e|tbl|public.f1_race_push_devices_free",
+        "n|rel|public.f1_race_push_devices_free",
+        "n|type|public.f1_race_push_devices_free"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "drop_table",
+      "statementTarget": [
+        "table",
+        "public",
+        "f1_race_sent_notifications_free"
+      ],
+      "writes": [
+        "s|tbl|public.f1_race_sent_notifications_free",
+        "n|tbl|public.f1_race_sent_notifications_free",
+        "e|tbl|public.f1_race_sent_notifications_free",
+        "n|rel|public.f1_race_sent_notifications_free",
+        "n|type|public.f1_race_sent_notifications_free"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_fk",
+      "statementTarget": [
+        "table",
+        "public",
+        "sent_notifications"
+      ],
+      "writes": [
+        "s|fk|public.sent_notifications.sent_notifications_device_id_push_devices_id_fkey",
+        "n|fk|public.sent_notifications.sent_notifications_device_id_push_devices_id_fkey",
+        "e|fk|public.sent_notifications.sent_notifications_device_id_push_devices_id_fkey",
+        "n|con|public.sent_notifications.sent_notifications_device_id_push_devices_id_fkey"
+      ],
+      "reads": [
+        "n|tbl|public.sent_notifications",
+        "n|sch|public",
+        "n|tbl|public.push_devices",
+        "n|sch|public",
+        "n|col|public.sent_notifications.device_id",
+        "n|col|public.push_devices.id",
+        "e|uniqueness|public.push_devices.id"
+      ]
+    }
+  ],
+  "deltas": [
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "name": "push_devices",
+        "isRlsEnabled": false,
+        "entityType": "tables"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "name": "sent_notifications",
+        "isRlsEnabled": false,
+        "entityType": "tables"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "push_devices",
+        "name": "id",
+        "type": "integer",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": {
+          "type": "always",
+          "name": "push_devices_id_seq",
+          "increment": "1",
+          "startWith": "1",
+          "minValue": "1",
+          "maxValue": "2147483647",
+          "cache": 1,
+          "cycle": false
+        },
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "push_devices",
+        "name": "endpoint",
+        "type": "text",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "push_devices",
+        "name": "p256dh",
+        "type": "text",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "push_devices",
+        "name": "auth",
+        "type": "text",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "push_devices",
+        "name": "created_at",
+        "type": "timestamp with time zone",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": "now()",
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "push_devices",
+        "name": "last_seen_at",
+        "type": "timestamp with time zone",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": "now()",
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "sent_notifications",
+        "name": "device_id",
+        "type": "integer",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "sent_notifications",
+        "name": "event",
+        "type": "text",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": null,
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "sent_notifications",
+        "name": "sent_at",
+        "type": "timestamp with time zone",
+        "typeSchema": null,
+        "notNull": true,
+        "dimensions": 0,
+        "default": "now()",
+        "generated": null,
+        "identity": null,
+        "entityType": "columns"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "sent_notifications",
+        "name": "sent_notifications_device_id_push_devices_id_fkey",
+        "nameExplicit": false,
+        "columns": [
+          "device_id"
+        ],
+        "schemaTo": "public",
+        "tableTo": "push_devices",
+        "columnsTo": [
+          "id"
+        ],
+        "onUpdate": "NO ACTION",
+        "onDelete": "CASCADE",
+        "entityType": "fks"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "sent_notifications",
+        "name": "sent_notifications_pkey",
+        "columns": [
+          "device_id",
+          "event"
+        ],
+        "nameExplicit": false,
+        "entityType": "pks"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "push_devices",
+        "name": "push_devices_pkey",
+        "columns": [
+          "id"
+        ],
+        "nameExplicit": false,
+        "entityType": "pks"
+      }
+    },
+    {
+      "op": "create",
+      "row": {
+        "schema": "public",
+        "table": "push_devices",
+        "name": "push_devices_endpoint_key",
+        "nameExplicit": false,
+        "columns": [
+          "endpoint"
+        ],
+        "nullsNotDistinct": false,
+        "entityType": "uniques"
+      }
+    },
+    {
+      "op": "drop",
+      "key": "tables\u0000[\"public\",\"f1_race_push_devices_free\"]"
+    },
+    {
+      "op": "drop",
+      "key": "tables\u0000[\"public\",\"f1_race_sent_notifications_free\"]"
+    },
+    {
+      "op": "drop",
+      "key": "columns\u0000[\"public\",\"f1_race_push_devices_free\",\"id\"]"
+    },
+    {
+      "op": "drop",
+      "key": "columns\u0000[\"public\",\"f1_race_push_devices_free\",\"endpoint\"]"
+    },
+    {
+      "op": "drop",
+      "key": "columns\u0000[\"public\",\"f1_race_push_devices_free\",\"p256dh\"]"
+    },
+    {
+      "op": "drop",
+      "key": "columns\u0000[\"public\",\"f1_race_push_devices_free\",\"auth\"]"
+    },
+    {
+      "op": "drop",
+      "key": "columns\u0000[\"public\",\"f1_race_push_devices_free\",\"created_at\"]"
+    },
+    {
+      "op": "drop",
+      "key": "columns\u0000[\"public\",\"f1_race_push_devices_free\",\"last_seen_at\"]"
+    },
+    {
+      "op": "drop",
+      "key": "columns\u0000[\"public\",\"f1_race_sent_notifications_free\",\"device_id\"]"
+    },
+    {
+      "op": "drop",
+      "key": "columns\u0000[\"public\",\"f1_race_sent_notifications_free\",\"event\"]"
+    },
+    {
+      "op": "drop",
+      "key": "columns\u0000[\"public\",\"f1_race_sent_notifications_free\",\"sent_at\"]"
+    },
+    {
+      "op": "drop",
+      "key": "fks\u0000[\"public\",\"f1_race_sent_notifications_free\",\"f1_race_sent_notifications_free_SHb2IDJROAnl_fkey\"]"
+    },
+    {
+      "op": "drop",
+      "key": "pks\u0000[\"public\",\"f1_race_sent_notifications_free\",\"f1_race_sent_notifications_free_pkey\"]"
+    },
+    {
+      "op": "drop",
+      "key": "pks\u0000[\"public\",\"f1_race_push_devices_free\",\"f1_race_push_devices_free_pkey\"]"
+    },
+    {
+      "op": "drop",
+      "key": "uniques\u0000[\"public\",\"f1_race_push_devices_free\",\"f1_race_push_devices_free_endpoint_key\"]"
+    }
+  ]
+}
