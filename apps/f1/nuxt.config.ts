@@ -4,6 +4,11 @@ import manifest from './manifest'
 import { F1ApiMode } from './shared/utils/f1ApiMode.ts'
 
 export default defineNuxtConfig({
+  vite: {
+    server: {
+      allowedHosts: ['.trycloudflare.com'],
+    },
+  },
   compatibilityDate: '2025-07-15',
   devtools: { enabled: false },
   runtimeConfig: {
@@ -13,6 +18,11 @@ export default defineNuxtConfig({
     /** Задержка ответа моков в replay, мс — чтобы видеть скелетоны и загрузку */
     f1MockDelay: 0,
     dbUrl: '',
+    vapidKeySecret: '',
+    vapidSubjectSecret: '',
+    public: {
+      vapidKey: '',
+    },
   },
   typescript: {
     nodeTsConfig: {

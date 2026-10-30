@@ -28,11 +28,13 @@
     "nuxt-open-fetch": "catalog:",
     "postgres": "catalog:",
     "vue": "catalog:",
-    "vue-router": "catalog:"
+    "vue-router": "catalog:",
+    "web-push": "catalog:"
   },
   "devDependencies": {
     "@multi/eslint-config": "workspace:*",
     "@types/node": "catalog:",
+    "@types/web-push": "catalog:",
     "cross-env": "catalog:",
     "drizzle-kit": "catalog:",
     "eslint": "catalog:",
