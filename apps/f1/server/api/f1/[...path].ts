@@ -11,6 +11,21 @@ export default defineCachedEventHandler(async (event) => {
   if (config.f1ApiMode === F1ApiMode.Live) {
     return await fetchF1(`${path}`, query)
   }
+  if (config.f1ApiMode === F1ApiMode.Db) {
+    if (!path)
+      throw apiError(400, ApiErrorCode.InvalidRequest, 'В /api/f1 не указан путь OpenF1')
+
+    const res = await readF1(path, query)
+
+    if (!res) {
+      const f1Res = await fetchF1(`${path}`, query)
+      if (f1Res?.length)
+        await saveF1(path, query, f1Res)
+      return f1Res
+    }
+
+    return res
+  }
   if (config.f1ApiMode === F1ApiMode.Record) {
     const response = await fetchF1(`${path}`, query)
     await storage.setItem(hashKey, response)
@@ -43,5 +58,6 @@ export default defineCachedEventHandler(async (event) => {
   /** Когда 60 минут пройдет, отдадим что было в кеше, в фоне начнем обновление (default) */
   swr: true,
   /** Кеш только в live режиме (прод сборка), в dev работаем на моках record/replay */
-  shouldBypassCache: () => useRuntimeConfig().f1ApiMode !== F1ApiMode.Live,
+  shouldBypassCache: () =>
+    useRuntimeConfig().f1ApiMode !== F1ApiMode.Live && useRuntimeConfig().f1ApiMode !== F1ApiMode.Db,
 })
