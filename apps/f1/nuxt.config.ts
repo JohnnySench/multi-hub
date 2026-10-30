@@ -56,15 +56,12 @@ export default defineNuxtConfig({
         { property: 'og:site_name', content: 'Формула 1' },
         { property: 'og:title', content: 'Формула 1 — результаты, календарь, телеметрия' },
         { property: 'og:description', content: 'Результаты гонок Формулы 1, календарь, телеметрия — по данным OpenF1, в стиле Pit wall.' },
-        { property: 'og:image', content: '/og-default.png' },
-        { property: 'og:image:width', content: '1200' },
-        { property: 'og:image:height', content: '630' },
-        { property: 'og:image:alt', content: 'Формула 1 — превью' },
         { property: 'og:locale', content: 'ru_RU' },
+        // og:image / og:image:width/height/alt / twitter:image emitted per-request in
+        // layouts/default.vue with an absolute URL (CodeRabbit #133: relative /og-default.png breaks previews)
         { name: 'twitter:card', content: 'summary_large_image' },
         { name: 'twitter:title', content: 'Формула 1 — результаты, календарь, телеметрия' },
         { name: 'twitter:description', content: 'Результаты гонок Формулы 1, календарь, телеметрия — по данным OpenF1, в стиле Pit wall.' },
-        { name: 'twitter:image', content: '/og-default.png' },
       ],
       link: [
         { rel: 'manifest', href: '/manifest.webmanifest' },

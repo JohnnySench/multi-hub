@@ -1,3 +1,20 @@
+<script setup lang="ts">
+// Per-page OG meta: og:url must reflect the current path (CodeRabbit review on #133).
+// Site origin is resolved per request (works on any host: preview, prod, localhost).
+  const requestURL = useRequestURL()
+
+  useHead({
+    meta: [
+      { property: 'og:url', content: requestURL.href },
+      { property: 'og:image', content: `${requestURL.origin}/og-default.png` },
+      { property: 'og:image:width', content: '1200' },
+      { property: 'og:image:height', content: '630' },
+      { property: 'og:image:alt', content: 'Формула 1 — превью' },
+      { name: 'twitter:image', content: `${requestURL.origin}/og-default.png` },
+    ],
+  })
+</script>
+
 <template>
   <div
     class="
