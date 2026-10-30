@@ -1,17 +1,32 @@
 <script setup lang="ts">
-// Per-page OG meta: og:url must reflect the current path (CodeRabbit review on #133).
-// Site origin is resolved per request (works on any host: preview, prod, localhost).
+// Per-page OG meta (CodeRabbit review on #133):
+// - og:url is reactive: computed from the current route so query changes
+//   update the metatag without remounting the layout.
+// - Fallback og:image/twitter:image is emitted only on non-/results routes —
+//   on /results the server-rendered RaceCard image must win during hydration.
+  const route = useRoute()
   const requestURL = useRequestURL()
 
+  const ogUrl = computed(() => `${requestURL.origin}${route.fullPath}`)
+  const isResultsPage = computed(() => route.path === '/results')
+
+  const fallbackImageMeta = computed(() =>
+    isResultsPage.value
+      ? []
+      : [
+        { property: 'og:image', content: `${requestURL.origin}/og-default.png` },
+        { property: 'og:image:width', content: '1200' },
+        { property: 'og:image:height', content: '630' },
+        { property: 'og:image:alt', content: 'Формула 1 — превью' },
+        { name: 'twitter:image', content: `${requestURL.origin}/og-default.png` },
+      ],
+  )
+
   useHead({
-    meta: [
-      { property: 'og:url', content: requestURL.href },
-      { property: 'og:image', content: `${requestURL.origin}/og-default.png` },
-      { property: 'og:image:width', content: '1200' },
-      { property: 'og:image:height', content: '630' },
-      { property: 'og:image:alt', content: 'Формула 1 — превью' },
-      { name: 'twitter:image', content: `${requestURL.origin}/og-default.png` },
-    ],
+    meta: computed(() => [
+      { property: 'og:url', content: ogUrl.value },
+      ...fallbackImageMeta.value,
+    ]),
   })
 </script>
 
