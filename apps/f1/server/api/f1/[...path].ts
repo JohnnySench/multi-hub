@@ -15,10 +15,15 @@ export default defineCachedEventHandler(async (event) => {
     if (!path)
       throw apiError(400, ApiErrorCode.InvalidRequest, 'В /api/f1 не указан путь OpenF1')
 
+    /** `latest` — «то, что идёт сейчас»: завтра это уже другая сессия, поэтому в базе его не храним */
+    if (Object.values(query).includes('latest'))
+      return await fetchF1(path, query)
+
     const res = await readF1(path, query)
 
     if (!res) {
-      const f1Res = await fetchF1(`${path}`, query)
+      const f1Res = await fetchF1(path, query)
+      /** Пустой ответ (404 → []) не сохраняем: сессия может ещё не пройти, и база запомнила бы «данных нет» навсегда */
       if (f1Res?.length)
         await saveF1(path, query, f1Res)
       return f1Res
@@ -57,7 +62,9 @@ export default defineCachedEventHandler(async (event) => {
   // getKey: event => event.path, и так по дефолту
   /** Когда 60 минут пройдет, отдадим что было в кеше, в фоне начнем обновление (default) */
   swr: true,
-  /** Кеш только в live режиме (прод сборка), в dev работаем на моках record/replay */
-  shouldBypassCache: () =>
-    useRuntimeConfig().f1ApiMode !== F1ApiMode.Live && useRuntimeConfig().f1ApiMode !== F1ApiMode.Db,
+  /**
+   * Кеш Nitro только в live режиме (прод сборка). В db его обходим: иначе ответ, закешированный раньше в live,
+   * вернётся без вызова readF1 / saveF1, и база останется пустой. В dev работаем на моках record/replay
+   */
+  shouldBypassCache: () => useRuntimeConfig().f1ApiMode !== F1ApiMode.Live,
 })
