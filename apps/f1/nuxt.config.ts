@@ -1,5 +1,6 @@
-import { fileURLToPath } from 'node:url'
 // https://nuxt.com/docs/api/configuration/nuxt-config
+import process from 'node:process'
+import { fileURLToPath } from 'node:url'
 import manifest from './manifest'
 import { F1ApiMode } from './shared/utils/f1ApiMode.ts'
 
@@ -50,6 +51,11 @@ export default defineNuxtConfig({
   ],
   eslint: { config: { standalone: false } },
   ui: { colorMode: false },
+  // Абсолютный URL сайта: nuxt-og-image использует его при статической генерации
+  // (pnpm generate), чтобы emit'ить абсолютный og:image (CodeRabbit #133 round 3).
+  site: {
+    url: process.env.NUXT_SITE_URL,
+  },
   ogImage: {
     enabled: true,
     debug: false,
