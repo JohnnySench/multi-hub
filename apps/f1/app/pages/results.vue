@@ -156,6 +156,37 @@
       cell: ({ row }) => h('span', { class: 'num-body text-highlighted' }, row.original.points ?? 0),
     },
   ]
+
+  /**
+   * OG-картинка гонки: этап + подиум в стиле Pit wall (рендер на сервере, nuxt-og-image).
+   * Когда бот Telegram запрашивает страницу, он получает сгенерированную картинку 1200×630.
+   */
+  const activeMeeting = computed(() => meetings.value.find(m => m.meetingKey === meetingKey.value))
+  const activeSession = computed(() => sessions.value.find(s => s.sessionKey === sessionKey.value))
+
+  const podiumRows = computed(() => {
+    return results.value
+      .filter(row => row.position !== null && row.position <= 3)
+      .toSorted((a, b) => (a.position ?? 9) - (b.position ?? 9))
+      .map(row => ({
+        position: row.position!,
+        nameAcronym: row.nameAcronym,
+        teamName: row.teamName,
+        teamColor: row.teamColor ?? undefined,
+      }))
+  })
+
+  defineOgImageComponent('RaceCard', {
+    round: () => activeMeeting.value?.round ?? null,
+    isTesting: () => activeMeeting.value?.isTesting ?? false,
+    place: () => activeMeeting.value?.location ?? activeMeeting.value?.countryName,
+    sessionLabel: () => activeSession.value?.label,
+    podium: podiumRows,
+    fontFamily: 'Roboto Flex',
+  }, {
+    width: 1200,
+    height: 630,
+  })
 </script>
 
 <template>

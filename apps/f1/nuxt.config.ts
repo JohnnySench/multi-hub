@@ -1,5 +1,6 @@
-import { fileURLToPath } from 'node:url'
 // https://nuxt.com/docs/api/configuration/nuxt-config
+import process from 'node:process'
+import { fileURLToPath } from 'node:url'
 import manifest from './manifest'
 import { F1ApiMode } from './shared/utils/f1ApiMode.ts'
 
@@ -41,19 +42,42 @@ export default defineNuxtConfig({
     '@multi/ui',
   ],
   modules: [
+    '@nuxt/fonts',
     '@nuxt/eslint',
     '@vite-pwa/nuxt',
     'nuxt-open-fetch',
     '@vueuse/nuxt',
+    'nuxt-og-image',
   ],
   eslint: { config: { standalone: false } },
   ui: { colorMode: false },
+  // Абсолютный URL сайта: nuxt-og-image использует его при статической генерации
+  // (pnpm generate), чтобы emit'ить абсолютный og:image (CodeRabbit #133 round 3).
+  site: {
+    url: process.env.NUXT_SITE_URL,
+  },
+  ogImage: {
+    enabled: true,
+    debug: false,
+  },
   app: {
     head: {
       title: 'Формула 1',
       htmlAttrs: { class: 'dark' },
       meta: [
         { name: 'theme-color', content: manifest.theme_color },
+        { name: 'description', content: 'Результаты гонок Формулы 1, календарь, телеметрия — по данным OpenF1, в стиле Pit wall.' },
+        // Стандартные OG/Twitter-теги: превью для Telegram и соцсетей
+        { property: 'og:type', content: 'website' },
+        { property: 'og:site_name', content: 'Формула 1' },
+        { property: 'og:title', content: 'Формула 1 — результаты, календарь, телеметрия' },
+        { property: 'og:description', content: 'Результаты гонок Формулы 1, календарь, телеметрия — по данным OpenF1, в стиле Pit wall.' },
+        { property: 'og:locale', content: 'ru_RU' },
+        // og:image / og:image:width/height/alt / twitter:image emitted per-request in
+        // layouts/default.vue with an absolute URL (CodeRabbit #133: relative /og-default.png breaks previews)
+        { name: 'twitter:card', content: 'summary_large_image' },
+        { name: 'twitter:title', content: 'Формула 1 — результаты, календарь, телеметрия' },
+        { name: 'twitter:description', content: 'Результаты гонок Формулы 1, календарь, телеметрия — по данным OpenF1, в стиле Pit wall.' },
       ],
       link: [
         { rel: 'manifest', href: '/manifest.webmanifest' },
