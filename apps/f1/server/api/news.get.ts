@@ -1,6 +1,6 @@
 import { XMLParser } from 'fast-xml-parser'
 
-export default defineEventHandler(async (event) => {
+export default defineCachedEventHandler(async (event) => {
   const config = useRuntimeConfig(event)
 
   const options = {
@@ -14,18 +14,21 @@ export default defineEventHandler(async (event) => {
       responseType: 'text',
     })
     const jsonResult = parser.parse(xmlData)
-    const { link } = jsonResult.rss.channel
+    const { copyright } = jsonResult.rss.channel
 
-    return Array.isArray(jsonResult.rss.channel.item)
+    const formattedNews = Array.isArray(jsonResult.rss.channel.item)
       ? jsonResult.rss.channel.item.map((item: RawNewsItem) => {
-          return toNewsItem(item, link)
+          return toNewsItem(item, copyright)
         })
-      : toNewsItem(jsonResult.rss.channel.item, link)
+      : [toNewsItem(jsonResult.rss.channel.item, copyright)]
+
+    return formattedNews
+      .filter(Boolean)
   }
   catch {
-    throw createError({
-      status: 400,
-      statusText: 'Bad Request',
-    })
+    throw apiError(502, ApiErrorCode.NewsSourceFailed, config.f1NewsUrl)
   }
+}, {
+  maxAge: 60 * 10,
+  swr: true,
 })

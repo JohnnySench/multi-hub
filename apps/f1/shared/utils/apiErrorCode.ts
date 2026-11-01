@@ -4,4 +4,5 @@ export enum ApiErrorCode {
   DeviceNotFound = 'DEVICE_NOT_FOUND',
   PushServiceFailed = 'PUSH_SERVICE_FAILED',
   InvalidRequest = 'INVALID_REQUEST',
+  NewsSourceFailed = 'NEWS_SOURCE_FAILED',
 }

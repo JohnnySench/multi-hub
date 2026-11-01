@@ -57,5 +57,5 @@ export default defineCachedEventHandler(async (event): Promise<SeasonWinner[]> =
   /** Устарело — отдаём прежний список и обновляем в фоне */
   swr: true,
   /** Как у прокси: кэш только в live, в dev на моках — каждый раз заново */
-  shouldBypassCache: () => useRuntimeConfig().f1ApiMode !== F1ApiMode.Live,
+  shouldBypassCache: event => useRuntimeConfig(event).f1ApiMode !== F1ApiMode.Live,
 })

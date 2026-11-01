@@ -5,8 +5,8 @@ export function toNewsItem(item: RawNewsItem, source: string): NewsItem | null {
   return {
     id: `${source}-${item.guid}`,
     source,
-    title: item.title,
-    teaser: item.description,
+    title: item.title.trim(),
+    teaser: item.description.trim(),
     url: item.link,
     imageUrl: item?.enclosure?.url,
     publishedAt: new Date(item.pubDate).toISOString(),

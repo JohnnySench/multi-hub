@@ -3,7 +3,7 @@
     title: 'Новости',
   })
 
-  useNews()
+  const { news } = useNews()
 </script>
 
 <template>
@@ -11,6 +11,7 @@
     <h1 class="display-xl">
       Новости
     </h1>
+    <div>{{ news }}</div>
     <NewsCardSessions />
 
     <div
