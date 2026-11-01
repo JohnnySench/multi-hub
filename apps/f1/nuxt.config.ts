@@ -20,6 +20,7 @@ export default defineNuxtConfig({
     dbUrl: '',
     vapidKeySecret: '',
     vapidSubjectSecret: '',
+    f1NewsUrl: '',
     public: {
       vapidKey: '',
     },
@@ -37,6 +38,10 @@ export default defineNuxtConfig({
       '~~/shared/utils/**',
     ],
   },
+  components: [
+    { path: '~/components/common', prefix: 'C' },
+    '~/components',
+  ],
   extends: [
     '@multi/ui',
   ],

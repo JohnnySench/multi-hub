@@ -1,13 +1,5 @@
-<script setup lang="ts">
-
-</script>
-
 <template>
-  <footer class="rounded-lg bg-muted px-4 py-3">
+  <CViewIsland as="footer">
     FOOTER
-  </footer>
+  </CViewIsland>
 </template>
-
-<style scoped>
-
-</style>

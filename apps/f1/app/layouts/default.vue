@@ -1,3 +1,6 @@
+<script setup lang="ts">
+</script>
+
 <template>
   <div
     class="
@@ -6,16 +9,20 @@
     "
   >
     <AppHeader class="col-span-1 sm:col-span-3" />
-    <AppSidebar class="hidden overflow-auto sm:col-span-1 sm:row-start-2 sm:flex" />
-    <main
+    <AppSidebar
+      class="hidden overflow-auto sm:col-span-1 sm:row-start-2 sm:flex"
+    />
+    <CViewIsland
+      as="main"
       class="
         col-span-1 min-w-0 overflow-x-hidden overflow-y-auto
         max-sm:scroll-progress
-        sm:col-span-2 sm:rounded-lg sm:bg-muted sm:p-6
+        sm:col-span-2
       "
     >
       <slot />
-    </main>
+    </CViewIsland>
+
     <AppFooter class="hidden sm:col-span-3 sm:block" />
     <LazyAppTabSidebar class="col-span-1 sm:hidden" />
   </div>
