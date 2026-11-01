@@ -15,30 +15,31 @@
 </script>
 
 <template>
-  <UNavigationMenu
-    :items="items"
-    :ui="{
-      link: 'h-9.5 px-3 gap-3 text-default before:rounded-md aria-[current=page]:before:bg-accent-tint',
-      linkLeadingIcon: 'size-4.5 text-muted group-aria-[current=page]:text-accent',
-      childList: 'ms-0 border-0',
-      childItem: 'ps-0 ms-0',
-    }"
-    class="rounded-lg bg-muted p-3"
-    color="neutral"
-    orientation="vertical"
-  >
-    <template #list-trailing>
-      <div class="mt-auto rounded-xl bg-elevated p-3">
-        <div class="flex flex-row items-start gap-2">
-          <div class="mt-1.5 size-2 animate-pulse rounded-full bg-accent ring-4 ring-accent/25" />
-          <p class="text-m-strong text-highlighted">
-            Практика 1 · через 5 дней
+  <CViewIsland>
+    <UNavigationMenu
+      :items="items"
+      :ui="{
+        link: 'h-9.5 px-3 gap-3 text-default before:rounded-md aria-[current=page]:before:bg-accent-tint',
+        linkLeadingIcon: 'size-4.5 text-muted group-aria-[current=page]:text-accent',
+        childList: 'ms-0 border-0',
+        childItem: 'ps-0 ms-0',
+      }"
+      color="neutral"
+      orientation="vertical"
+    >
+      <template #list-trailing>
+        <CIsland class="mt-auto">
+          <div class="flex flex-row items-start gap-2">
+            <div class="mt-1.5 size-2 animate-pulse rounded-full bg-accent ring-4 ring-accent/25" />
+            <p class="text-m-strong text-highlighted">
+              Практика 1 · через 5 дней
+            </p>
+          </div>
+          <p class="mt-1 text-label text-muted">
+            Гран-при США · данные — после финиша сессии
           </p>
-        </div>
-        <p class="mt-1 text-label text-muted">
-          Гран-при США · данные — после финиша сессии
-        </p>
-      </div>
-    </template>
-  </UNavigationMenu>
+        </CIsland>
+      </template>
+    </UNavigationMenu>
+  </CViewIsland>
 </template>

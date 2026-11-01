@@ -18,6 +18,7 @@ export const navGroups: NavGroup[] = [
       { label: 'Обзор', icon: 'i-lucide-layout-dashboard', to: '/' },
       { label: 'Календарь', icon: 'i-lucide-calendar', to: '/calendar', badge: 23 },
       { label: 'Зачёт', icon: 'i-lucide-trophy', to: '/standings' },
+      { label: 'Новости', icon: 'i-lucide-trophy', to: '/news' },
     ],
   },
   {

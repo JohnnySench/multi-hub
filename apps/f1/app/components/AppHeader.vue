@@ -33,7 +33,7 @@
 </script>
 
 <template>
-  <header class="flex items-center justify-between rounded-lg bg-muted px-2 py-3 sm:px-4">
+  <CViewIsland as="header" class="flex items-center justify-between">
     <div class="flex items-center gap-1 sm:gap-2">
       <AppLogo />
       <span class="text-muted">/</span>
@@ -82,5 +82,5 @@
         </template>
       </USelect>
     </div>
-  </header>
+  </CViewIsland>
 </template>

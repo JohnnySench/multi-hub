@@ -8,7 +8,7 @@
 </script>
 
 <template>
-  <nav class="grid grid-cols-5 items-center rounded-lg bg-muted px-3 py-4">
+  <CViewIsland as="nav" class="grid grid-cols-5 items-center rounded-lg">
     <NuxtLink
       v-for="tab in tabs"
       :key="tab.to"
@@ -22,5 +22,5 @@
       {{ tab.label }}
     </NuxtLink>
     <div>...</div>
-  </nav>
+  </CViewIsland>
 </template>
