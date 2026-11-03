@@ -5,6 +5,7 @@
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
+    "dev:db": "cross-env NUXT_F1_API_MODE=db nuxt dev",
     "dev:record": "cross-env NUXT_F1_API_MODE=record nuxt dev",
     "dev:replay": "cross-env NUXT_F1_API_MODE=replay nuxt dev",
     "generate": "nuxt generate",
@@ -27,6 +28,7 @@
     "@vueuse/nuxt": "catalog:",
     "@vueuse/router": "catalog:",
     "drizzle-orm": "catalog:",
+    "fast-xml-parser": "catalog:",
     "nuxt": "catalog:",
     "nuxt-og-image": "catalog:",
     "nuxt-open-fetch": "catalog:",

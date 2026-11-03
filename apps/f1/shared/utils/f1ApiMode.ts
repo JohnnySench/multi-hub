@@ -3,4 +3,5 @@ export enum F1ApiMode {
   Live = 'live',
   Record = 'record',
   Replay = 'replay',
+  Db = 'db',
 }
