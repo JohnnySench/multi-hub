@@ -20,6 +20,9 @@
   "dependencies": {
     "@multi/ui": "workspace:*",
     "@nuxt/eslint": "catalog:",
+    "@nuxt/fonts": "catalog:",
+    "@takumi-rs/core": "catalog:",
+    "@takumi-rs/wasm": "catalog:",
     "@vite-pwa/nuxt": "catalog:",
     "@vueuse/core": "catalog:",
     "@vueuse/nuxt": "catalog:",
@@ -27,6 +30,7 @@
     "drizzle-orm": "catalog:",
     "fast-xml-parser": "catalog:",
     "nuxt": "catalog:",
+    "nuxt-og-image": "catalog:",
     "nuxt-open-fetch": "catalog:",
     "postgres": "catalog:",
     "vue": "catalog:",
